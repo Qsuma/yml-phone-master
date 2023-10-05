@@ -20,7 +20,7 @@ class UserProvider {
     };
 
     final response = await http.post(
-        Uri.parse('http://192.168.72.239:3003/auth/signup'),
+        Uri.parse('http://yml-live.com:3003/auth/signup'),
         body: authData);
    
     Map<String, dynamic> decodedResp = json.decode(response.body);
@@ -47,7 +47,7 @@ class UserProvider {
     json.encode(authData);
 
     final response = await http.post(
-        Uri.parse('http://192.168.72.239:3003/auth/signin'),
+        Uri.parse('http://yml-live.com:3003/auth/signin'),
         body: authData);
    
     final Map<String, dynamic> decodedResp = json.decode(response.body);

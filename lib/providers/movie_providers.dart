@@ -18,7 +18,7 @@ class MoviesProviders extends ChangeNotifier {
   final prefs = PreferenciasUsuario();
  
 
-  final String _baseURL = '192.168.72.239:3003';
+  final String _baseURL = 'yml-live.com:3003';
 
   List<List<Movie>> Todo = [];
   List<Movie> Estrenos = [];

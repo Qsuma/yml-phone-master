@@ -14,7 +14,7 @@ class SubtitlesProvider extends ChangeNotifier {
   }
   getSubtitles(String id, String Lenguage) async {
     var url = Uri.http(
-      '192.168.72.239:3003',
+      'yml-live.com:3003',
       '/movies/subtitles/$id/$Lenguage',
     );
     final response = await http.get(url, headers: {'auth-token': prefs.Token});
