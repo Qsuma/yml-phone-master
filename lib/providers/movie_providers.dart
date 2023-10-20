@@ -1,10 +1,13 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:yml/globals/globals.dart';
 
 
-import '../globals/globals.dart';
+
 import '../helpers/debouncer.dart';
 import '../models/generos.dart';
 import '../models/listar_peliculas.dart';
@@ -14,7 +17,7 @@ import '../src/preferencias_usuario.dart';
 import 'generos_provider.dart';
 
 class MoviesProviders extends ChangeNotifier {
-  //http://app-b4b84fdd-2d5f-4011-bad7-5b43052f49df.cleverapps.io/movies/google/video/6431763d47b2a4a091b0418b
+ 
   final prefs = PreferenciasUsuario();
  
 
@@ -39,50 +42,44 @@ class MoviesProviders extends ChangeNotifier {
   Stream<List<Movie>> get suggestionStream =>
       _suggestionStreamController.stream;
   MoviesProviders() {
-   // getEstrenosMovies();
-    //getGenderMovies('644f6e78925b5b5f003b44c1');
-   // getTodo();
+   
   }
-// agrupar por generos segun me caigan
-  // BuildContext get context => context;
 
-  //ESTABLECER Q IDIOMA VA A MANDAR DEPENDIENDO DEL IDIOMA
   Future<String> _getJsonData(String endpoint, int page) async {
-    //Locale locale = Localizations.of(context, String);
+   
     final url = Uri.http(_baseURL, endpoint, {
-      //'language': prefs.Idioma,
+      
       'page': '$page',
-      'limit': '10'
+      'limit': '12'
     });
-
+ PPrint(url);
     final response =  await http.get(url, headers: {
       'auth-token': prefs.Token
       
-      // ignore: prefer_const_constructors
+      
       }).timeout(Duration(seconds: 45),onTimeout: () {
-    // Time has run out, do what you wanted to do.
-    return http.Response('Error', 408); // Request Timeout response status code
+   
+    return http.Response('Error', 408); 
   } );
     
-
     return response.body;
   }
 
   getEstrenosMovies() async {
    TodasPage++;
     final jsonData = await _getJsonData('/movies/list', TodasPage);
-  
     final nowPlayingResponse = ListaPeliculas.fromJson(jsonData);
 
     Estrenos.addAll(nowPlayingResponse.results);
     notifyListeners();
     if(TodasPage ==1){ await getTodo();
    }
+   PPrint('GET ESTENOS Y LA PAGINA ES $TodasPage');
+     notifyListeners();
     return nowPlayingResponse.results;
   }
 
   Future<List<List<Movie>>> getTodo() async {
-
    
 
        List<Genero> generos = await GeneroProvider().getGneroos();
@@ -97,8 +94,6 @@ class MoviesProviders extends ChangeNotifier {
         if (generos[i].id != 'All') {
           Todo.add(await getGenderMovies(generos[i].id));
         }
-
-     
       }
      
     }
@@ -108,18 +103,18 @@ class MoviesProviders extends ChangeNotifier {
     return Todo;
   }
   Aumentar_Numero(String genderId) async {
-        Todo[_posicion(genderId)].addAll(await getGenderMovies(genderId));
+        Todo[posicion(genderId)].addAll(await getGenderMovies(genderId));
   }
   Future<List<Movie>> getGenderMovies(String genderId) async {
-      Paginas.insert(_posicion(genderId), Paginas[_posicion(genderId)]+1);
+      Paginas[posicion(genderId)]++;
 
 
-    final jsonData =
-        await _getJsonData('/movies/filter/$genderId',Paginas[_posicion(genderId)]);
-    final GenreResponse = ListaPeliculas.fromJson(jsonData);
+    var jsonData =
+        await _getJsonData('/movies/filter/$genderId', Paginas[posicion(genderId)]);
+    var GenreResponse = ListaPeliculas.fromJson(jsonData);
   
-
-    //notifyListeners();
+ PPrint('GET Genders Y LA PAGINA ES ${Paginas[posicion(genderId)]}');
+   // notifyListeners();
     return GenreResponse.results;
   }
 
@@ -129,6 +124,7 @@ class MoviesProviders extends ChangeNotifier {
       '/movies/search/$query',
     );
     final response = await http.get(url, headers: {'auth-token': prefs.Token});
+    PPrint(prefs.Token);
 
     final searchResponse = SearchResponse.fromJson(response.body);
     return searchResponse.results;
@@ -137,7 +133,7 @@ class MoviesProviders extends ChangeNotifier {
   void getSuggestionsByQuery(String SearchTerm) {
     debouncer.value = '';
     debouncer.onValue = (value) async {
-      
+  
       final results = await searchMovies(value);
       _suggestionStreamController.add(results);
     };
@@ -147,7 +143,7 @@ class MoviesProviders extends ChangeNotifier {
     Future.delayed(const Duration(milliseconds: 301))
         .then((_) => timer.cancel());
   }
-    int  _posicion(String Idgenero){
+    int  posicion(String Idgenero){
     List<String> IdGeneros=[];
     for(int i=0;i<gener.length;i++){
       IdGeneros.add(gener[i].id) ;

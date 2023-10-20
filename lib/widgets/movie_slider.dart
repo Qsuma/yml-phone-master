@@ -144,32 +144,23 @@ class MoviePoster extends StatelessWidget {
               // ignore: prefer_const_literals_to_create_immutables
               children: [
                 // ignore: prefer_const_constructors
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      crearRuta(DetailsScreen(movie: movie),
-                          const Duration(milliseconds: 700)),
-                    );
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: FadeInImage(
-                      placeholder: const AssetImage('assets/loading.gif'),
-                      image: MemoryImage(
-                          base64Decode(movie.backdropPath.split(',').last)),
-                      // image: NetworkImage(movie.posterPath),
-                      imageErrorBuilder: (contextl, error, stackTrace) =>
-                          const Image(
-                        image: AssetImage('assets/YML.png'),
-                        height: 140,
-                        width: 120,
-                        fit: BoxFit.cover,
-                      ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: FadeInImage(
+                    placeholder: const AssetImage('assets/loading.gif'),
+                    image: MemoryImage(
+                        base64Decode(movie.backdropPath.split(',').last)),
+                    // image: NetworkImage(movie.posterPath),
+                    imageErrorBuilder: (contextl, error, stackTrace) =>
+                        const Image(
+                      image: AssetImage('assets/YML.png'),
+                      height: 140,
                       width: 120,
-                      height: 144, //imagen
                       fit: BoxFit.cover,
                     ),
+                    width: 120,
+                    height: 144, //imagen
+                    fit: BoxFit.cover,
                   ),
                 ),
                 const SizedBox(height: 5),

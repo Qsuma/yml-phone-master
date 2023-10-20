@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:yml/globals/globals.dart';
 import 'package:yml/widgets/raw_listener.dart';
 import '../../generated/l10n.dart';
 import '../../models/generos.dart';
@@ -16,7 +17,7 @@ import '../../widgets/movie_slider.dart';
 import '../details_screens.dart';
 import 'dart:io' show Platform, exit;
 import 'dart:convert';
-import 'dart:typed_data';
+
 
 
 class HomeSreen extends StatefulWidget {
@@ -27,7 +28,8 @@ class HomeSreen extends StatefulWidget {
 }
 
 class _HomeSreenState extends State<HomeSreen> {
- 
+
+  final ScrollController scrollController =ScrollController();
   bool ismaximaced =false;
   String selectedGenreId = 'All';
   List<Movie> selectedGenderMovies = [];
@@ -46,12 +48,12 @@ class _HomeSreenState extends State<HomeSreen> {
   @override
   Widget build(BuildContext context) {
  
-    final ScrollController scrollController =ScrollController();
+    
     final moviesProviders = Provider.of<MoviesProviders>(context);
     final generosProviders = Provider.of<GeneroProvider>(context);
   
     List<Movie> selectedMovies = moviesProviders.Estrenos;
-    final List<Genero> generos = generosProviders.Gneroos;
+    List<Genero> generos = generosProviders.Gneroos;
     if (selectedGenreId != 'All') {
       selectedMovies = selectedGenderMovies;
     }
@@ -216,6 +218,7 @@ class _HomeSreenState extends State<HomeSreen> {
                                     // else selectedMovies = moviesProviders.Estrenos;
                                   });
                             
+                            
                                 },
                               ),
                             
@@ -246,30 +249,18 @@ class _HomeSreenState extends State<HomeSreen> {
                   height: 30,
                 )
               ])),
-              SliderVertical(selectedMovies: selectedMovies,onNextPage: (){(selectedGenreId=='All')?moviesProviders.getEstrenosMovies() :moviesProviders.Aumentar_Numero(selectedGenreId);}, scrollController: scrollController,)
+              SliderVertical(selectedMovies:(selectedGenreId=='All')?moviesProviders.Estrenos :
+              moviesProviders.Todo[moviesProviders.posicion(selectedGenreId)],onNextPage:  (){(selectedGenreId=='All')?moviesProviders.getEstrenosMovies() :
+              moviesProviders.Aumentar_Numero(selectedGenreId);}, scrollController: scrollController,)
       
-              /* Expanded(
-                  child: GridView.count(
-                    scrollDirection: Axis.horizontal,
-                    crossAxisCount: 2,
-                    children: movies
-                        .where((movie) =>
-                            selectedGenre == 'All' || movie['genre'] == selectedGenre)
-                        .map((movie) {
-                      return Card(
-                        child: Center(child: Text(movie['title'])),
-                      );
-                    }).toList(),
-                  ),
-                ),*/
+           
             ])),
       ),
     );
-    //  }
-    //  return Center(child: const CircularProgressIndicator());
+   
   }
-  //)
-  //  );
+
+ 
 }
 
 class SliderVertical extends StatefulWidget {
@@ -281,26 +272,50 @@ class SliderVertical extends StatefulWidget {
   final ScrollController scrollController;
   final Function onNextPage;
   final List<Movie> selectedMovies;
-  //final String selectedGenreId;
+
 
   @override
   State<SliderVertical> createState() => _SliderVerticalState();
 }
 
 class _SliderVerticalState extends State<SliderVertical> {
- 
+  late bool _isLoading;
+   int page =2;
   @override
-  void initState() {
+   void initState() {
     super.initState();
-    widget.scrollController.addListener(() {
-      if (widget.scrollController.position.pixels ==
-          widget.scrollController.position.maxScrollExtent) {
-        //llamara al provider
-        widget.onNextPage();
-      }
-    });
-  }
+    _isLoading =false;
+    widget.scrollController.addListener(_listener);
 
+  }
+  _listener() async {
+  
+if (widget.scrollController.position.pixels ==
+          widget.scrollController.position.maxScrollExtent && _isLoading ==false) {
+             widget.onNextPage();  
+            setState(() {
+             _isLoading =true; 
+            });
+     
+    
+    // (widget.genderId=='All')? await _estrenos():widget.selectedMovies.addAll(await MoviesProviders().getGenderMovies(widget.genderId,page: page));
+    setState(() {
+    _isLoading =false;
+    page++;
+   
+    });
+    
+        
+      }
+     
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    widget.scrollController;
+    widget.scrollController.removeListener(_listener);
+    widget.selectedMovies.clear();
+    }
   @override
   Widget build(BuildContext context) {
     return SliverGrid(
