@@ -28,6 +28,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  
+  device_info_plus: ^9.1.1
+  flutter_udid: ^2.0.1
   dart_vlc: ^0.4.0
   flutter_staggered_grid_view: ^0.7.0
   desktop_window: ^0.4.0

@@ -1,7 +1,9 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_udid/flutter_udid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yml/screens/device_screen.dart';
 import 'package:yml/widgets/raw_listener.dart';
 
 
@@ -51,25 +53,49 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   
   }
+Future<String> obtenerModeloDispositivo() async {
+  final deviceInfo = DeviceInfoPlugin();
+  if (Platform.isAndroid) {
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    print('Modelo del dispositivo: ${androidInfo.model}');
+    return androidInfo.model;
+  } else if (Platform.isIOS) {
+    IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+    print('Modelo del dispositivo: ${iosInfo.utsname.machine}');
+    return iosInfo.model;
+  }
+  WindowsDeviceInfo windowsInfo = await deviceInfo.windowsInfo;
+  
+return windowsInfo.productName;
+}
+Future<String> _IdDevice () async {
+  String deviceId = await FlutterUdid.udid;
+  return deviceId;
+  }
 _loginRegistered() async{
+   String deviceId = await _IdDevice();
+   String model = await obtenerModeloDispositivo();
 
     //aqui va el coso dese de cargar mientras espera
-
-    Map info = await userRegisterProvider.loginUser(_usernameController.text, _passwordController.text);
+//TODO: ENVIAR ID
+    Map info = await userRegisterProvider.loginUser(_usernameController.text, _passwordController.text,model,deviceId);
 
     if (info['ok']) {
       if (rememberme) {
         SharedPreferences.getInstance().then((prefs) {
+        prefs.setString('deviceId', deviceId);
+          prefs.setString('deviceId', deviceId);
           prefs.setString('usuario', _usernameController.text);
           prefs.setString('password', _passwordController.text);
      
         });
       } else {
         SharedPreferences.getInstance().then((prefs) {
+           prefs.setString('usuario', '');
+          prefs.setString('password', '');
         });
       }
-
-      Navigator.pushReplacement(
+       Navigator.pushReplacement(
         context,
         crearRuta(
             FutureBuilder(
@@ -81,7 +107,25 @@ _loginRegistered() async{
             //RegisterScreen(),
             const Duration(milliseconds: 700)),
       );
-    } 
+    } else if(info.containsValue('Demasiados dispositivos Vinculados')){
+        SharedPreferences.getInstance().then((prefs) {
+         prefs.setString('deviceId', deviceId);
+          prefs.setString('deviceId', deviceId);
+          
+        });
+    Navigator.push(
+                      context,
+                      crearRuta(
+                    Dispositivos(Usuario:_usernameController.text )
+                    ,
+                         
+                          const Duration(milliseconds: 300)),
+                    );
+      }else {
+      Alarm().showAlarm(
+          context, ClassLocalizations.of(context).wrongPassCorreo, info['mensaje']);
+    }
+
 }
   
   @override
@@ -344,25 +388,28 @@ _loginRegistered() async{
   }
 
   _login(LoginBloc bloc, BuildContext context) async {
+   String deviceId = await _IdDevice();
+   String model = await obtenerModeloDispositivo();
     //aqui va el coso dese de cargar mientras espera
-
-    Map info = await userRegisterProvider.loginUser(bloc.email, bloc.password);
+//TODO: ENVIAR ID
+    Map info = await userRegisterProvider.loginUser(_usernameController.text, _passwordController.text,model,deviceId);
 
     if (info['ok']) {
       if (rememberme) {
         SharedPreferences.getInstance().then((prefs) {
+        prefs.setString('deviceId', deviceId);
+          prefs.setString('deviceId', deviceId);
           prefs.setString('usuario', _usernameController.text);
           prefs.setString('password', _passwordController.text);
-        
+     
         });
       } else {
         SharedPreferences.getInstance().then((prefs) {
-          prefs.setString('usuario', '');
+           prefs.setString('usuario', '');
           prefs.setString('password', '');
         });
       }
-
-      Navigator.pushReplacement(
+       Navigator.pushReplacement(
         context,
         crearRuta(
             FutureBuilder(
@@ -374,9 +421,23 @@ _loginRegistered() async{
             //RegisterScreen(),
             const Duration(milliseconds: 700)),
       );
-    } else {
+    } else if(info.containsValue('Demasiados dispositivos Vinculados')){
+        SharedPreferences.getInstance().then((prefs) {
+         prefs.setString('deviceId', deviceId);
+          prefs.setString('deviceId', deviceId);
+          
+        });
+    Navigator.push(
+                      context,
+                      crearRuta(
+                    Dispositivos(Usuario:_usernameController.text )
+                    ,
+                         
+                          const Duration(milliseconds: 300)),
+                    );
+      }else {
       Alarm().showAlarm(
-          context, ClassLocalizations.of(context).wrongPassCorreo, 'Error!!!');
+          context, ClassLocalizations.of(context).wrongPassCorreo, info['mensaje']);
     }
 
     /*.then((value) {

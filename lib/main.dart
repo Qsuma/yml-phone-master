@@ -78,6 +78,10 @@ class AppState extends StatelessWidget {
           create: (_) => MoviesProviders(),
           lazy: false,
         ),
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+          lazy: false,
+        ),
       ],
       child: const MyApp(),
     );
@@ -163,19 +167,5 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Future<bool> _login() async {
-    
-    //aqui va el coso dese de cargar mientras espera
-    if (prefs.usuario.isNotEmpty && prefs.password.isNotEmpty) {
-      Map info = await UserProvider().loginUser(prefs.usuario, prefs.password);
-
-      if (info['ok']) {
-       
-        return true;
-      } else {
-        return false;
-      }
-    }
-    return false;
-  }
+  
 }

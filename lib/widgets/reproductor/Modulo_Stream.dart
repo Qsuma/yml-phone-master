@@ -44,7 +44,7 @@ class _ChewiePlayerState extends State<ChewiePlayer> {
   
   videoPlayerController = VideoPlayerController.networkUrl(
                               //**quitar el replace
-                              Uri.parse(widget.movie.video.replaceAll('localhost', 'yml-live.com')
+                              Uri.parse(widget.movie.video.replaceAll('yml-live.com', 'yml-live.com')
                               ),
                               httpHeaders: {
                                 'Range': 'bytes = 0-1023',

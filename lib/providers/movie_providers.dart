@@ -41,9 +41,7 @@ class MoviesProviders extends ChangeNotifier {
 
   Stream<List<Movie>> get suggestionStream =>
       _suggestionStreamController.stream;
-  MoviesProviders() {
-   
-  }
+  MoviesProviders();
 
   Future<String> _getJsonData(String endpoint, int page) async {
    

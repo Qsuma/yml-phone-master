@@ -66,4 +66,25 @@ class PreferenciasUsuario {
   set password(String value) {
     _globals.setString('password', value);
   }
+  String get deviceId {
+    return _globals.getString('deviceId') ?? '';
+  }
+
+  set deviceId(String value) {
+    _globals.setString('deviceId', value);
+  }
+  String get model {
+    return _globals.getString('model') ?? '';
+  }
+
+  set model(String value) {
+    _globals.setString('model', value);
+  }
+  String get Devices {
+    return _globals.getString('Devices') ?? '';
+  }
+
+  set Devices(String value) {
+    _globals.setString('Devices', value);
+  }
 }
