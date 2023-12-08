@@ -80,7 +80,19 @@ flutter_icons:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-
+  msix: ^3.16.7
+  msix_config:
+  display_name: YML-LIVE
+  publisher_display_name: YML
+  publisher: CN=YML, O=Contoso Corporation, C=US
+  #signtool_options: /fd SHA256 /f "<path_to>\test_certificate.crt"
+  identity_name: com.PedroGuerra.YML
+  capabilities: internetClient
+  logo_path: C:\Users\pablo\yml-1\assets\icon.png
+  certificate_path: C:\users\pablo\cert.pfx
+  certificate_password: Pppp54321
+  app_installer:
+    publish_folder_path: d:\
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -135,3 +147,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
