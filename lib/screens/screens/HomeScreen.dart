@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
 import 'package:window_manager/window_manager.dart';
 import 'package:yml/globals/globals.dart';
 import 'package:yml/widgets/raw_listener.dart';
@@ -35,7 +36,7 @@ class _HomeSreenState extends State<HomeSreen> {
   List<Movie> selectedGenderMovies = [];
  @override
   void initState() {
-    
+      
     super.initState();
   }
   

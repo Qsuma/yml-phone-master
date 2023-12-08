@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   
+  wakelock_plus: ^1.1.4
   device_info_plus: ^9.1.1
   flutter_udid: ^2.0.1
   dart_vlc: ^0.4.0

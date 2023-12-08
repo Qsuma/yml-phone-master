@@ -1,5 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 
+
 import 'package:window_manager/window_manager.dart';
 
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:page_transition/page_transition.dart';
 //importacion de los paquetes de localizacion
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 
 import 'globals/globals.dart';
 
@@ -26,14 +28,18 @@ import 'src/bloc/provider.dart';
 import 'src/preferencias_usuario.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'dart:io' show Platform;
+import 'package:wakelock_plus/wakelock_plus.dart';
 void main() async {
   DartVLC.initialize();
+ 
    WidgetsFlutterBinding.ensureInitialized();
+    WakelockPlus.enable();
   final prefs = PreferenciasUsuario();
   await prefs.initPrefs();
   
   
   if(Platform.isWindows){ 
+  
   await windowManager.ensureInitialized();
   WindowOptions windowOptions = const WindowOptions(
     fullScreen: false,

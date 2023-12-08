@@ -1,4 +1,5 @@
 import 'package:chewie/chewie.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -37,9 +38,13 @@ class _ChewiePlayerState extends State<ChewiePlayer> {
   late ChewieController chewieController;
   late VideoPlayerController videoPlayerController;
   
+  
   @override
   void initState(){
-    
+   
+      
+     
+
   super.initState();
   
   videoPlayerController = VideoPlayerController.networkUrl(

@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   
   }
-Future<String> obtenerModeloDispositivo() async {
+ Future<String> obtenerModeloDispositivo() async {
   final deviceInfo = DeviceInfoPlugin();
   if (Platform.isAndroid) {
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -68,8 +68,13 @@ Future<String> obtenerModeloDispositivo() async {
   
 return windowsInfo.productName;
 }
-Future<String> _IdDevice () async {
+  Future<String> _IdDevice () async {
+     final deviceInfo = DeviceInfoPlugin();
+ if(Platform.isWindows){WindowsDeviceInfo windowsInfo = await deviceInfo.windowsInfo;
+  
+return windowsInfo.productId;}
   String deviceId = await FlutterUdid.udid;
+ // Wakelock.enable();
   return deviceId;
   }
 _loginRegistered() async{
@@ -95,6 +100,7 @@ _loginRegistered() async{
           prefs.setString('password', '');
         });
       }
+       // ignore: use_build_context_synchronously
        Navigator.pushReplacement(
         context,
         crearRuta(
@@ -113,6 +119,7 @@ _loginRegistered() async{
           prefs.setString('deviceId', deviceId);
           
         });
+    // ignore: use_build_context_synchronously
     Navigator.push(
                       context,
                       crearRuta(
