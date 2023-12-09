@@ -151,12 +151,13 @@ class _MyAppState extends State<MyApp> {
           appBarTheme:
               const AppBarTheme(color: Color.fromARGB(255, 10, 10, 12)),
               scrollbarTheme: ScrollbarThemeData(
+                
   interactive: true,
   thumbVisibility:MaterialStatePropertyAll(Platform.isWindows),
   radius: const Radius.circular(20.0),
   thumbColor: MaterialStateProperty.all(
       Colors.red[400]),
-  thickness: MaterialStateProperty.all(5.0),
+  thickness: MaterialStateProperty.all(15.0),
   minThumbLength: 100,
 ),
 
