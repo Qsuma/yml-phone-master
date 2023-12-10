@@ -199,27 +199,30 @@ class _PosterAndTitle extends StatelessWidget {
           const SizedBox(width: 20),
           ConstrainedBox(
             constraints: BoxConstraints(maxWidth: size.width - 170),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  movie.title,
-                  style: const TextStyle(fontSize: 18, color: Colors.white70),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  textAlign: TextAlign.left,
-                ),
-                Text(
-                  movie.originalTitle,
-                  style: const TextStyle(fontSize: 16, color: Colors.white70),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  textAlign: TextAlign.left,
-                ),
-               
-                
-               
-              ],
+            child: Container(
+              width: MediaQuery.of(context).size.width*0.4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    movie.title,
+                    style: const TextStyle(fontSize: 18, color: Colors.white70),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    textAlign: TextAlign.left,
+                  ),
+                  Text(
+                    movie.originalTitle,
+                    style: const TextStyle(fontSize: 16, color: Colors.white70),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    textAlign: TextAlign.left,
+                  ),
+                 
+                  
+                 
+                ],
+              ),
             ),
           ),
               IconButton(iconSize: 50,

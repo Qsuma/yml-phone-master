@@ -438,7 +438,7 @@ class MoviePoster2 extends StatelessWidget {
                           fit: BoxFit.contain,
                         ),
                         width: (Platform.isWindows)? MediaQuery.of(context).size.width * 0.2  : MediaQuery.of(context).size.width * 0.45,
-                        height: (Platform.isWindows)? (MediaQuery.of(context).size.height<700)?170 :350  :(MediaQuery.of(context).size.width<600)?243 :190, //imagen
+                        height: (Platform.isWindows)? (MediaQuery.of(context).size.height<700)?170 :350  :(MediaQuery.of(context).size.width<600)?243 :190-18, //imagen
                         fit: BoxFit.cover
                       ),
                     ),
