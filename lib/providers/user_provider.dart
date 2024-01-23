@@ -28,7 +28,7 @@ List<DeviceElement> devices=[];
     };
 
     final response = await http.post(
-        Uri.parse('http://yml-live.com:3003/auth/signup'),
+        Uri.parse('http://yml-live.me:3003/auth/signup'),
         body: authData);
    
     Map<String, dynamic> decodedResp = json.decode(response.body);
@@ -49,7 +49,7 @@ List<DeviceElement> devices=[];
      }
       json.encode(authData);
          final response = await http.post(
-        Uri.parse('http://yml-live.com:3003/auth/signin'),
+        Uri.parse('http://yml-live.me:3003/auth/signin'),
 
         body: authData);
         final Map<String, dynamic> decodedResp = json.decode(response.body);
@@ -66,7 +66,7 @@ List<DeviceElement> devices=[];
     json.encode(authData);
 
     final response = await http.post(
-        Uri.parse('http://yml-live.com:3003/auth/signin'),
+        Uri.parse('http://yml-live.me:3003/auth/signin'),
 
         body: authData);
     final Map<String, dynamic> decodedResp = json.decode(response.body);
@@ -98,7 +98,7 @@ List<DeviceElement> devices=[];
     json.encode(authData);
 
     final response = await http.post(
-        Uri.parse('http://yml-live.com:3003/user/del-device'),
+        Uri.parse('http://yml-live.me:3003/user/del-device'),
 
         body: authData);
      }

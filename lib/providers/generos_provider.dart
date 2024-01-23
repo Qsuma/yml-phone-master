@@ -11,7 +11,7 @@ import '../screens/details_screens.dart';
 import 'generos_response.dart';
 
 class GeneroProvider extends ChangeNotifier {
-  final String _url = 'yml-live.com:3003';
+  final String _url = 'yml-live.me:3003';
   String end = '/movies/genres';
   List<Genero> Gneroos = [];
   GeneroProvider() {
