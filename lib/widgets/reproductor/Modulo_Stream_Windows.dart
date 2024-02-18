@@ -74,7 +74,7 @@ String Url = htmlEscape.convert(unescaped);
         },
       );
 
-      player.open(Media.network(Uri.parse(widget.movie.video)),autoStart: true);
+      player.open(Media.network(Uri.parse(widget.movie.video.replaceAll('yml-live.com', 'yml-live.me'))),autoStart: true);
  
       player.errorStream.listen((event) {
         debugPrint('libVLC error.');
