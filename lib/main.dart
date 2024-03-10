@@ -35,9 +35,12 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 void main() async {
   DartVLC.initialize();
   WidgetsFlutterBinding.ensureInitialized();
+  late bool isTv= false;
+  if(Platform.isAndroid){
  final deviceInfo = DeviceInfoPlugin();
  final androidInfo = await deviceInfo.androidInfo;
- final isTv = androidInfo.systemFeatures.contains('android.software.leanback');
+isTv = androidInfo.systemFeatures.contains('android.software.leanback');
+ }
    WidgetsFlutterBinding.ensureInitialized();
     WakelockPlus.enable();
   final prefs = PreferenciasUsuario();
