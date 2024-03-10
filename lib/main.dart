@@ -1,4 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+
 
 
 import 'package:window_manager/window_manager.dart';
@@ -10,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:page_transition/page_transition.dart';
 //importacion de los paquetes de localizacion
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:yml/screens/TV_screens/login_screen.dart';
 
 
 import 'globals/globals.dart';
@@ -31,7 +34,10 @@ import 'dart:io' show Platform;
 import 'package:wakelock_plus/wakelock_plus.dart';
 void main() async {
   DartVLC.initialize();
- 
+  WidgetsFlutterBinding.ensureInitialized();
+ final deviceInfo = DeviceInfoPlugin();
+ final androidInfo = await deviceInfo.androidInfo;
+ final isTv = androidInfo.systemFeatures.contains('android.software.leanback');
    WidgetsFlutterBinding.ensureInitialized();
     WakelockPlus.enable();
   final prefs = PreferenciasUsuario();
@@ -61,13 +67,14 @@ void main() async {
 
   runApp( 
  // DartVLCExample()
-  const AppState()
+   AppState(isTv: isTv,)
   
   );
 }
 
 class AppState extends StatelessWidget {
-  const AppState({super.key});
+  final bool isTv;
+  const AppState({super.key, required this.isTv});
 
   @override
   Widget build(BuildContext context) {
@@ -89,28 +96,28 @@ class AppState extends StatelessWidget {
           lazy: false,
         ),
       ],
-      child: const MyApp(),
+      child:  MyApp(isTV: isTv,),
     );
   }
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final bool isTV;
+  const MyApp({super.key, required this.isTV});
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+
   
-  @override
-  void initState() {
- super.initState();
-}
+
 
  
   @override
   Widget build(BuildContext context) {
+   
     final prefs = PreferenciasUsuario();
     
     return ProviderP(
@@ -128,7 +135,7 @@ class _MyAppState extends State<MyApp> {
                 ),
 
                 //loguinscreen()
-                nextScreen: const LoginScreen(),
+                nextScreen:(widget.isTV)?const TVLoginScreen():LoginScreen(),
                 //nextScreen: homeScreen2('nada'),
                 // nextScreen: MovieScreen3(),
                 
