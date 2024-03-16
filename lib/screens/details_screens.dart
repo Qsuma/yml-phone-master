@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:yml/screens/TV_screens/details_screens.dart';
 import 'package:yml/widgets/raw_listener.dart';
+import 'package:yml/widgets/videowidgetlocal.dart';
 
 
 
@@ -128,22 +130,7 @@ class _CustomAppBar extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
             child: Container()),
         background:Stack(fit: StackFit.expand, children: [
-          FadeInImage(
-            fit: BoxFit.cover,
-            placeholder: const AssetImage(
-              'assets/loading.gif',
-        
-            ),
-            image: MemoryImage(
-                    base64Decode(backdropPath)),
-
-            // image: AssetImage('assets/YML.png'),
-            //NetworkImage(moviesProviders.Estrenos.first.posterPath),
-            imageErrorBuilder: (context, error, stackTrace) => const Image(
-              image: AssetImage('assets/YML.png'),
-              fit: BoxFit.contain,
-            ),
-          ),
+          VideoSelecter(genreID: movie.genreId),
           Padding(
             padding: const EdgeInsetsDirectional.only(top: 0),
             child:  DecoratedBox(

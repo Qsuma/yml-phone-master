@@ -8,6 +8,7 @@ import 'package:yml/screens/TV_screens/Tv_widgets/movie_slider.dart';
 import 'package:yml/screens/TV_screens/details_screens.dart';
 
 import 'package:yml/widgets/raw_listener.dart';
+import 'package:yml/widgets/videowidgetlocal.dart';
 import '../../generated/l10n.dart';
 import '../../models/generos.dart';
 import '../../models/movie.dart';
@@ -129,23 +130,24 @@ class TVHomeSreenState extends State<TVHomeSreen> {
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         background: Stack(fit: StackFit.expand, children: [
-          FadeInImage(
-            fit: BoxFit.cover,
-            placeholder: const AssetImage(
-              'assets/YML.png',
+          // FadeInImage(
+          //   fit: BoxFit.cover,
+          //   placeholder: const AssetImage(
+          //     'assets/YML.png',
         
-            ),
-            image: (selectedMovies.isNotEmpty)
-                ? MemoryImage(
-                    base64Decode(selectedMovies[0].backdropPath.split(',').last))
-                : const AssetImage('assets/YML.png') as ImageProvider,
-            // image: AssetImage('assets/YML.png'),
-            //NetworkImage(moviesProviders.Estrenos.first.posterPath),
-            imageErrorBuilder: (context, error, stackTrace) => const Image(
-              image: AssetImage('assets/YML.png'),
-              fit: BoxFit.contain,
-            ),
-          ),
+          //   ),
+          //   image: (selectedMovies.isNotEmpty)
+          //       ? MemoryImage(
+          //           base64Decode(selectedMovies[0].backdropPath.split(',').last))
+          //       : const AssetImage('assets/YML.png') as ImageProvider,
+          //   // image: AssetImage('assets/YML.png'),
+          //   //NetworkImage(moviesProviders.Estrenos.first.posterPath),
+          //   imageErrorBuilder: (context, error, stackTrace) => const Image(
+          //     image: AssetImage('assets/YML.png'),
+          //     fit: BoxFit.contain,
+          //   ),
+          // ),
+          VideoSelecter(genreID:selectedGenreId ),
           const Padding(
             padding: EdgeInsetsDirectional.only(top: 0),
             child: DecoratedBox(

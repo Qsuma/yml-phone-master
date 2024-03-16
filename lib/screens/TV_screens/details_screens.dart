@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yml/models/generos.dart';
@@ -10,6 +11,7 @@ import 'package:yml/screens/TV_screens/MyTvScreen.dart';
 import 'package:yml/screens/TV_screens/Tv_widgets/movie_slider.dart';
 import 'package:yml/src/preferencias_usuario.dart';
 import 'package:yml/widgets/raw_listener.dart';
+import 'package:yml/widgets/videowidgetlocal.dart';
 
 final prefs = PreferenciasUsuario();
 class TVDetailsScreen extends StatefulWidget {
@@ -150,22 +152,7 @@ return Future.value(
             padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
             child: Container()),
         background:Stack(fit: StackFit.expand, children: [
-          FadeInImage(
-            fit: BoxFit.cover,
-            placeholder: const AssetImage(
-              'assets/loading.gif',
-        
-            ),
-            image: MemoryImage(
-                    base64Decode(backdropPath)),
-
-            // image: AssetImage('assets/YML.png'),
-            //NetworkImage(moviesProviders.Estrenos.first.posterPath),
-            imageErrorBuilder: (context, error, stackTrace) => const Image(
-              image: AssetImage('assets/YML.png'),
-              fit: BoxFit.contain,
-            ),
-          ),
+          VideoSelecter(genreID: movie.genreId),
           const Padding(
             padding: EdgeInsetsDirectional.only(top: 0),
             child:  DecoratedBox(
@@ -193,7 +180,7 @@ return Future.value(
     // final subtitlesProvider =
     // SubtitlesProvider(movie.id!, ClassLocalizations().idioma);
     
-    final String posterPath= movie.backdropPath.split(',').last;
+    final String posterPath= movie.posterPath.split(',').last;
     
     return Container(
       margin: const EdgeInsets.only(top: 20),
@@ -203,21 +190,21 @@ return Future.value(
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: FadeInImage(
-              fit: BoxFit.cover,
-              placeholder: const AssetImage('assets/YML.png'),
-              image:
-                  MemoryImage(base64Decode(posterPath)),
-              // image: NetworkImage(movie.posterPath),
-              imageErrorBuilder: (context, error, stackTrace) => const Image(
-                image: AssetImage('assets/YML.png'),
-                height: 150,
-                width: 100,
-                fit: BoxFit.cover,
-              ),
-            
-              height: 150,
-              width: 100,
+            fit: BoxFit.cover,
+            placeholder: const AssetImage(
+              'assets/loading.gif',
+        
             ),
+            image: MemoryImage(
+                    base64Decode(posterPath)),
+
+            // image: AssetImage('assets/YML.png'),
+            //NetworkImage(moviesProviders.Estrenos.first.posterPath),
+            imageErrorBuilder: (context, error, stackTrace) => const Image(
+              image: AssetImage('assets/YML.png'),
+              fit: BoxFit.contain,
+            ),
+          ),
           ),
           const SizedBox(width: 20),
           ConstrainedBox(
@@ -268,6 +255,8 @@ return Future.value(
     );
   }
 }
+
+
 
 class _Overview extends StatelessWidget {
   final Movie movie;

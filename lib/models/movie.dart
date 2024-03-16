@@ -6,7 +6,7 @@ class Movie {
     required this.backdropPath,
     required this.originalLanguage,
     required this.overview,
-   
+   required this.posterPath,
     required this.releaseDate,
     required this.title,
     required this.video,
@@ -21,7 +21,7 @@ class Movie {
   String backdropPath;
   String originalLanguage;
   String overview;
-
+  String posterPath;
   String releaseDate;
   String title;
   String video;
@@ -38,7 +38,7 @@ class Movie {
         backdropPath: json["backdropPath"],
         originalLanguage: json["originalLanguage"],
         overview: json["overview"],
-       
+        posterPath: json["posterPath"],
         releaseDate: json["releaseDate"],
         title: json["title"],
         video: json["video"],

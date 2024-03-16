@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:yml/globals/globals.dart';
 import 'package:yml/widgets/raw_listener.dart';
+import 'package:yml/widgets/videowidgetlocal.dart';
 import '../../generated/l10n.dart';
 import '../../models/generos.dart';
 import '../../models/movie.dart';
@@ -133,23 +134,24 @@ class _HomeSreenState extends State<HomeSreen> {
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         background: Stack(fit: StackFit.expand, children: [
-          FadeInImage(
-            fit: BoxFit.cover,
-            placeholder: const AssetImage(
-              'assets/YML.png',
+          // FadeInImage(
+          //   fit: BoxFit.cover,
+          //   placeholder: const AssetImage(
+          //     'assets/YML.png',
         
-            ),
-            image: (selectedMovies.isNotEmpty)
-                ? MemoryImage(
-                    base64Decode(selectedMovies[0].backdropPath.split(',').last))
-                : const AssetImage('assets/YML.png') as ImageProvider,
-            // image: AssetImage('assets/YML.png'),
-            //NetworkImage(moviesProviders.Estrenos.first.posterPath),
-            imageErrorBuilder: (context, error, stackTrace) => const Image(
-              image: AssetImage('assets/YML.png'),
-              fit: BoxFit.contain,
-            ),
-          ),
+          //   ),
+          //   image: (selectedMovies.isNotEmpty)
+          //       ? MemoryImage(
+          //           base64Decode(selectedMovies[0].backdropPath.split(',').last))
+          //       : const AssetImage('assets/YML.png') as ImageProvider,
+          //   // image: AssetImage('assets/YML.png'),
+          //   //NetworkImage(moviesProviders.Estrenos.first.posterPath),
+          //   imageErrorBuilder: (context, error, stackTrace) => const Image(
+          //     image: AssetImage('assets/YML.png'),
+          //     fit: BoxFit.contain,
+          //   ),
+          // ),
+          VideoSelecter(genreID:selectedMovies[0].genreId ),
           Padding(
             padding: EdgeInsetsDirectional.only(top: 0),
             child: DecoratedBox(
@@ -373,23 +375,11 @@ class MoviePoster2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     late Movie moviefinal;
-    final Movie vacia = Movie(
-        originalTitle: 'vacio',
-        backdropPath:
-            'https://th.bing.com/th/id/R.332ee537b18e9f5eb0eb43e72842b5ff?rik=vQg2K4%2fUzBGjEw&pid=ImgRaw&r=0',
-        originalLanguage: 'ES_es',
-        overview: 'ESTA VACIO',
-        
-        releaseDate: '23-3-4',
-        title: 'VACIO',
-        video: 'https://youtu.be/MB3YGQ-O1lk',
-        genreId: '23',
-        isDeleted: false,
-        updatedAt: DateTime(2017));
+   
 
     // ignore: unnecessary_null_comparison
     if (movie == null) {
-      moviefinal = vacia;
+     
     } else {
       moviefinal = movie;
     }

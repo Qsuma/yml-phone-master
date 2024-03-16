@@ -135,7 +135,7 @@ String Url = htmlEscape.convert(unescaped);
                   }, icon:const Icon(Icons.fullscreen))],
                   leading: IconButton(
                   
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back ,color:Colors.red,),
           onPressed: () {
             player.stop();
             Navigator.pop(context);
