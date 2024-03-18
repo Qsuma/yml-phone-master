@@ -77,6 +77,7 @@ _listener() {
       // Actualiza el estado de la UI
       setState(() {});
     }).catchError((error) {
+      print('ERROR $error');
      showDialog(context: context, builder:(context) => AlertDialog(
             backgroundColor: Colors.white70.withOpacity(1),
             title: Center(

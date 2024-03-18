@@ -6,10 +6,10 @@ import 'package:yml/widgets/video_local.dart';
 
 class VideoSelecter extends StatefulWidget {
   const VideoSelecter({
-    super.key, required this.genreID,
+    super.key, required this.genreID, required this.isTVorWidows,
     
   });
-
+ final bool  isTVorWidows;
 final String genreID;
 
   @override
@@ -19,9 +19,12 @@ final String genreID;
 class _VideoSelecterState extends State<VideoSelecter> {
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(builder: (context, orientation) => (Platform.isWindows || orientation != Orientation.portrait )
-    ?VideoHorizontal(genreId: widget.genreID,aspectRatio:100/33 , ) :
-    VideoHorizontal(genreId: widget.genreID,aspectRatio:100/115) ,);
+    return OrientationBuilder(builder: (context, orientation) {
+      bool isAndoid = Platform.isAndroid; 
+     
+     if(widget.isTVorWidows){return VideoHorizontal(genreId: widget.genreID,aspectRatio:100/20 , )  ;}
+      else {    return VideoHorizontal(genreId: widget.genreID,aspectRatio:100/40)  ;}
+    },);
     // return (Platform.isWindows)? VideoHorizontalTVyWindows(movie: widget.movie):
     //  OrientationBuilder(builder: (context, orientation) =>  VideoHorizontalCelular(movie: widget.movie, estaVirado: orientation != Orientation.portrait),);
   }

@@ -39,7 +39,7 @@ void main() async {
   if(Platform.isAndroid){
  final deviceInfo = DeviceInfoPlugin();
  final androidInfo = await deviceInfo.androidInfo;
-isTv = androidInfo.systemFeatures.contains('android.software.leanback');
+ isTv = androidInfo.systemFeatures.contains('android.software.leanback');
  }
    WidgetsFlutterBinding.ensureInitialized();
     WakelockPlus.enable();

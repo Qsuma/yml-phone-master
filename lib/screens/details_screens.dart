@@ -130,7 +130,7 @@ class _CustomAppBar extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
             child: Container()),
         background:Stack(fit: StackFit.expand, children: [
-          VideoSelecter(genreID: movie.genreId),
+          VideoSelecter(genreID: movie.genreId,isTVorWidows: Platform.isWindows),
           Padding(
             padding: const EdgeInsetsDirectional.only(top: 0),
             child:  DecoratedBox(
@@ -219,7 +219,8 @@ class _PosterAndTitle extends StatelessWidget {
                       context,
                       crearRuta(
                       //  ReproductorScreen(movie: movie),
-                         Platform.isWindows?DartVLCExample(movie: movie,)          : ChewiePlayer(
+                         Platform.isWindows?DartVLCExample(movie: movie,)          : 
+                         ChewiePlayer(
                            
                              movie: movie),
                           const Duration(milliseconds: 300)),

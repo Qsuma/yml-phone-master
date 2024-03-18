@@ -152,7 +152,7 @@ return Future.value(
             padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
             child: Container()),
         background:Stack(fit: StackFit.expand, children: [
-          VideoSelecter(genreID: movie.genreId),
+          VideoSelecter(genreID: movie.genreId,isTVorWidows: true),
           const Padding(
             padding: EdgeInsetsDirectional.only(top: 0),
             child:  DecoratedBox(
@@ -183,6 +183,7 @@ return Future.value(
     final String posterPath= movie.posterPath.split(',').last;
     
     return Container(
+      height: MediaQuery.of(context).size.height*0.3,
       margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(

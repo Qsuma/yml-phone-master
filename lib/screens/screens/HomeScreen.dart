@@ -130,28 +130,27 @@ class _HomeSreenState extends State<HomeSreen> {
       floating: false,
       pinned: true,
       snap: false,
-      expandedHeight: 460,
+      expandedHeight: 200,
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         background: Stack(fit: StackFit.expand, children: [
-          // FadeInImage(
-          //   fit: BoxFit.cover,
-          //   placeholder: const AssetImage(
-          //     'assets/YML.png',
+          FadeInImage(
+            fit: BoxFit.fill,
+            placeholder: const AssetImage(
+              'assets/YML.png',
         
-          //   ),
-          //   image: (selectedMovies.isNotEmpty)
-          //       ? MemoryImage(
-          //           base64Decode(selectedMovies[0].backdropPath.split(',').last))
-          //       : const AssetImage('assets/YML.png') as ImageProvider,
-          //   // image: AssetImage('assets/YML.png'),
-          //   //NetworkImage(moviesProviders.Estrenos.first.posterPath),
-          //   imageErrorBuilder: (context, error, stackTrace) => const Image(
-          //     image: AssetImage('assets/YML.png'),
-          //     fit: BoxFit.contain,
-          //   ),
-          // ),
-          VideoSelecter(genreID:selectedMovies[0].genreId ),
+            ),
+            image: (selectedMovies.isNotEmpty)
+                ? AssetImage('assets/gif/${selectedMovies[0].genreId}.gif')
+                : const AssetImage('assets/YML.png'),
+            // image: AssetImage('assets/YML.png'),
+            //NetworkImage(moviesProviders.Estrenos.first.posterPath),
+            imageErrorBuilder: (context, error, stackTrace) => const Image(
+              image: AssetImage('assets/YML.png'),
+              fit: BoxFit.contain,
+            ),
+          ),
+          //VideoSelecter(genreID:selectedMovies[0].genreId ),
           Padding(
             padding: EdgeInsetsDirectional.only(top: 0),
             child: DecoratedBox(
