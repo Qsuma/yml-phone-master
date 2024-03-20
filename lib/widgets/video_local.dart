@@ -16,7 +16,7 @@ class _VideoWidgetState extends State<VideoWidget> {
   @override
    initState()  {
     super.initState();
-    _controller =  VideoPlayerController.asset(widget.route)..initialize().then((_) {});
+    _controller =   VideoPlayerController.asset(widget.route)..initialize().then((_) {});
     
         _controller.play();
         _controller.setLooping(true);

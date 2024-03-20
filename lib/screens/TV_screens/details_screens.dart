@@ -140,7 +140,7 @@ return Future.value(
   ),
         
       ),
-      expandedHeight:200,
+      expandedHeight:MediaQuery.of(context).size.height*0.44,
       floating: false,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(

@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:yml/models/movie.dart';
 import 'package:yml/widgets/video_local.dart';
 
 class VideoSelecter extends StatefulWidget {

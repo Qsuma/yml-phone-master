@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:yml/screens/TV_screens/details_screens.dart';
 import 'package:yml/widgets/raw_listener.dart';
 import 'package:yml/widgets/videowidgetlocal.dart';
+import 'package:yml/widgets/videowidows.dart';
 
 
 
@@ -118,7 +119,7 @@ class _CustomAppBar extends StatelessWidget {
      Navigator.pop(context);
     },
   ),
-      expandedHeight: (Platform.isWindows)?460:200,
+      expandedHeight: (Platform.isWindows)?MediaQuery.of(context).size.height*0.43:MediaQuery.of(context).size.height*0.2,
       floating: false,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
@@ -130,7 +131,7 @@ class _CustomAppBar extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
             child: Container()),
         background:Stack(fit: StackFit.expand, children: [
-          VideoSelecter(genreID: movie.genreId,isTVorWidows: Platform.isWindows),
+        (Platform.isAndroid)?  VideoSelecter(genreID: movie.genreId,isTVorWidows: Platform.isWindows):VideoLocalWindows(genreID: movie.genreId),
           Padding(
             padding: const EdgeInsetsDirectional.only(top: 0),
             child:  DecoratedBox(

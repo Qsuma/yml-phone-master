@@ -130,7 +130,7 @@ class _HomeSreenState extends State<HomeSreen> {
       floating: false,
       pinned: true,
       snap: false,
-      expandedHeight: 200,
+      expandedHeight: (Platform.isAndroid)?MediaQuery.of(context).size.height*0.2:MediaQuery.of(context).size.height*0.44,
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         background: Stack(fit: StackFit.expand, children: [

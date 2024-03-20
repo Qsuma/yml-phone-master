@@ -126,7 +126,7 @@ class TVHomeSreenState extends State<TVHomeSreen> {
       floating: false,
       pinned: true,
       snap: false,
-      expandedHeight: 200,
+      expandedHeight:MediaQuery.of(context).size.height*0.44,
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         background: Stack(fit: StackFit.expand, children: [
