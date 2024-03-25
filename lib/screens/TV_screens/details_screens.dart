@@ -152,7 +152,25 @@ return Future.value(
             padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
             child: Container()),
         background:Stack(fit: StackFit.expand, children: [
-          VideoSelecter(genreID: movie.genreId,isTVorWidows: true),
+         SizedBox(
+          height: MediaQuery.of(context).size.height*0.43,
+           child: FadeInImage(
+                  fit: BoxFit.fill,
+                  placeholder: const AssetImage(
+                    'assets/YML.png',
+              
+                  ),
+                  image: AssetImage( 'assets/gif/${movie.genreId}.gif'),
+                    
+                  // image: AssetImage('assets/YML.png'),
+                  //NetworkImage(moviesProviders.Estrenos.first.posterPath),
+                  imageErrorBuilder: (context, error, stackTrace) =>  Image(
+                    image: MemoryImage(
+                              base64Decode(movie.backdropPath.split(',').last)),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+         ),
           const Padding(
             padding: EdgeInsetsDirectional.only(top: 0),
             child:  DecoratedBox(

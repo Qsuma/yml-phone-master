@@ -131,7 +131,39 @@ class _CustomAppBar extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
             child: Container()),
         background:Stack(fit: StackFit.expand, children: [
-        (Platform.isAndroid)?  VideoSelecter(genreID: movie.genreId,isTVorWidows: Platform.isWindows):VideoLocalWindows(genreID: movie.genreId),
+        (Platform.isAndroid)?  Container(
+          
+          child: FadeInImage(
+                fit: BoxFit.fill,
+                placeholder: const AssetImage(
+                  'assets/YML.png',
+            
+                ),
+                image: AssetImage( 'assets/gif/${movie.genreId}.gif'),
+                  
+                // image: AssetImage('assets/YML.png'),
+                //NetworkImage(moviesProviders.Estrenos.first.posterPath),
+                imageErrorBuilder: (context, error, stackTrace) =>  Image(
+                  image: MemoryImage(
+                            base64Decode(movie.backdropPath.split(',').last)) as ImageProvider,
+                  fit: BoxFit.contain,
+                ),
+              ),):FadeInImage(
+                fit: BoxFit.fill,
+                placeholder: const AssetImage(
+                  'assets/YML.png',
+            
+                ),
+                image: AssetImage( 'assets/gif/${movie.genreId}.gif'),
+                  
+                // image: AssetImage('assets/YML.png'),
+                //NetworkImage(moviesProviders.Estrenos.first.posterPath),
+                imageErrorBuilder: (context, error, stackTrace) =>  Image(
+                  image: MemoryImage(
+                            base64Decode(movie.backdropPath.split(',').last)) as ImageProvider,
+                  fit: BoxFit.contain,
+                ),
+              ),
           Padding(
             padding: const EdgeInsetsDirectional.only(top: 0),
             child:  DecoratedBox(

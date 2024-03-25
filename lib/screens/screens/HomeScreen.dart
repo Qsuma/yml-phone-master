@@ -135,21 +135,21 @@ class _HomeSreenState extends State<HomeSreen> {
         collapseMode: CollapseMode.pin,
         background: Stack(fit: StackFit.expand, children: [
           FadeInImage(
-            fit: BoxFit.fill,
-            placeholder: const AssetImage(
-              'assets/YML.png',
-        
-            ),
-            image: (selectedMovies.isNotEmpty)
-                ? AssetImage('assets/gif/${selectedMovies[0].genreId}.gif')
-                : const AssetImage('assets/YML.png'),
-            // image: AssetImage('assets/YML.png'),
-            //NetworkImage(moviesProviders.Estrenos.first.posterPath),
-            imageErrorBuilder: (context, error, stackTrace) => const Image(
-              image: AssetImage('assets/YML.png'),
-              fit: BoxFit.contain,
-            ),
-          ),
+                fit: BoxFit.fill,
+                placeholder: const AssetImage(
+                  'assets/YML.png',
+            
+                ),
+                image: AssetImage( 'assets/gif/${selectedGenreId}.gif'),
+                  
+                // image: AssetImage('assets/YML.png'),
+                //NetworkImage(moviesProviders.Estrenos.first.posterPath),
+                imageErrorBuilder: (context, error, stackTrace) =>  Image(
+                  image:(selectedMovies.isNotEmpty)? MemoryImage(
+                            base64Decode(selectedMovies.first.backdropPath.split(',').last)) as ImageProvider:AssetImage('assets/splash.gif'),
+                  fit: BoxFit.fill,
+                ),
+              ),
           //VideoSelecter(genreID:selectedMovies[0].genreId ),
           Padding(
             padding: EdgeInsetsDirectional.only(top: 0),

@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:yml/widgets/video_local.dart';
 
-class VideoSelecter extends StatefulWidget {
+class VideoSelecter extends StatelessWidget {
   const VideoSelecter({
     super.key, required this.genreID, required this.isTVorWidows,
     
@@ -11,23 +12,55 @@ class VideoSelecter extends StatefulWidget {
 final String genreID;
 
   @override
-  State<VideoSelecter> createState() => _VideoSelecterState();
-}
-
-class _VideoSelecterState extends State<VideoSelecter> {
-  @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(builder: (context, orientation) {
-      bool isAndoid = Platform.isAndroid; 
-     
-     if(widget.isTVorWidows){return VideoHorizontal(genreId: widget.genreID,aspectRatio:100/20 , )  ;}
-      else {    return VideoHorizontal(genreId: widget.genreID,aspectRatio:100/40)  ;}
-    },);
-    // return (Platform.isWindows)? VideoHorizontalTVyWindows(movie: widget.movie):
-    //  OrientationBuilder(builder: (context, orientation) =>  VideoHorizontalCelular(movie: widget.movie, estaVirado: orientation != Orientation.portrait),);
-  }
+    Future<bool> assetExists(String path) async{
+ try{
+   await rootBundle.loadString(path);
+   return true;
+ } catch (e){
+   return false;
+ }
+}
+   Future<String> dameImagen(String ruta)  async {
+    String path = 'images/nocolor.png';
+bool fileExists = await assetExists(path);
+if (fileExists) {
+    return ruta;
+}else{
+    return 'assets/YML.png';
 }
 
+
+
+   }
+    return SizedBox(
+      height: MediaQuery.of(context).size.height*0.2,
+      child: FutureBuilder(
+        future: dameImagen('assets/$genreID.gif'),
+        builder:(context, snapshot) {
+          if (snapshot.hasData) {
+          return  FadeInImage(
+                fit: BoxFit.fill,
+                placeholder: const AssetImage(
+                  'assets/YML.png',
+            
+                ),
+                image: AssetImage( snapshot.data!),
+                  
+                // image: AssetImage('assets/YML.png'),
+                //NetworkImage(moviesProviders.Estrenos.first.posterPath),
+                imageErrorBuilder: (context, error, stackTrace) => const Image(
+                  image: AssetImage('assets/YML.png'),
+                  fit: BoxFit.contain,
+                ),
+              );
+          }else {
+           return const Center(child: CircularProgressIndicator(),);
+          }
+        }, 
+      ),
+    );}
+}
 
 class VideoHorizontal extends StatefulWidget {
   const VideoHorizontal({
