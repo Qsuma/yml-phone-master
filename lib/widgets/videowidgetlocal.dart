@@ -27,7 +27,7 @@ bool fileExists = await assetExists(path);
 if (fileExists) {
     return ruta;
 }else{
-    return 'assets/YML.png';
+    return 'assets/icon.png';
 }
 
 
@@ -42,15 +42,15 @@ if (fileExists) {
           return  FadeInImage(
                 fit: BoxFit.fill,
                 placeholder: const AssetImage(
-                  'assets/YML.png',
+                  'assets/icon.png',
             
                 ),
                 image: AssetImage( snapshot.data!),
                   
-                // image: AssetImage('assets/YML.png'),
+                // image: AssetImage('assets/icon.png'),
                 //NetworkImage(moviesProviders.Estrenos.first.posterPath),
                 imageErrorBuilder: (context, error, stackTrace) => const Image(
-                  image: AssetImage('assets/YML.png'),
+                  image: AssetImage('assets/icon.png'),
                   fit: BoxFit.contain,
                 ),
               );

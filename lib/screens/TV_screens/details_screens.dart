@@ -121,7 +121,7 @@ return Future.value(
   const _CustomAppBar(this.movie, this.focusNode, this.focusNode2);
   @override
   Widget build(BuildContext context) {
-    final String backdropPath = movie.backdropPath.split(',').last;
+  //  final String backdropPath = movie.backdropPath.split(',').last;
     return SliverAppBar(
       leading: ShortcutController(
         focusNode: focusNode,
@@ -157,12 +157,12 @@ return Future.value(
            child: FadeInImage(
                   fit: BoxFit.fill,
                   placeholder: const AssetImage(
-                    'assets/YML.png',
+                    'assets/icon.png',
               
                   ),
                   image: AssetImage( 'assets/gif/${movie.genreId}.gif'),
                     
-                  // image: AssetImage('assets/YML.png'),
+                  // image: AssetImage('assets/icon.png'),
                   //NetworkImage(moviesProviders.Estrenos.first.posterPath),
                   imageErrorBuilder: (context, error, stackTrace) =>  Image(
                     image: MemoryImage(
@@ -216,11 +216,8 @@ return Future.value(
             ),
             image: MemoryImage(
                     base64Decode(posterPath)),
-
-            // image: AssetImage('assets/YML.png'),
-            //NetworkImage(moviesProviders.Estrenos.first.posterPath),
             imageErrorBuilder: (context, error, stackTrace) => const Image(
-              image: AssetImage('assets/YML.png'),
+              image: AssetImage('assets/icon.png'),
               fit: BoxFit.contain,
             ),
           ),

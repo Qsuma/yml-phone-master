@@ -137,12 +137,12 @@ class _HomeSreenState extends State<HomeSreen> {
           FadeInImage(
                 fit: BoxFit.fill,
                 placeholder: const AssetImage(
-                  'assets/YML.png',
+                  'assets/icon.png',
             
                 ),
                 image: AssetImage( 'assets/gif/${selectedGenreId}.gif'),
                   
-                // image: AssetImage('assets/YML.png'),
+                // image: AssetImage('assets/icon.png'),
                 //NetworkImage(moviesProviders.Estrenos.first.posterPath),
                 imageErrorBuilder: (context, error, stackTrace) =>  Image(
                   image:(selectedMovies.isNotEmpty)? MemoryImage(
@@ -421,7 +421,7 @@ class MoviePoster2 extends StatelessWidget {
                             base64Decode(moviefinal.backdropPath.split(',').last)),
                         //NetworkImage(moviefinal.posterPath),
                         imageErrorBuilder: (context, error, stackTrace) => Image(
-                          image: const AssetImage('assets/YML.png'),
+                          image: const AssetImage('assets/icon.png'),
                           height: 240,
                           width:(Platform.isWindows)? MediaQuery.of(context).size.width * 0.2  : MediaQuery.of(context).size.width * 0.43,
                           fit: BoxFit.contain,

@@ -153,7 +153,7 @@ class MoviePoster extends StatelessWidget {
                     // image: NetworkImage(movie.posterPath),
                     imageErrorBuilder: (contextl, error, stackTrace) =>
                         const Image(
-                      image: AssetImage('assets/YML.png'),
+                      image: AssetImage('assets/icon.png'),
                       height: 140-16,
                       width: 120,
                       fit: BoxFit.cover,

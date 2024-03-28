@@ -136,12 +136,12 @@ class _CustomAppBar extends StatelessWidget {
           child: FadeInImage(
                 fit: BoxFit.fill,
                 placeholder: const AssetImage(
-                  'assets/YML.png',
+                  'assets/icon.png',
             
                 ),
                 image: AssetImage( 'assets/gif/${movie.genreId}.gif'),
                   
-                // image: AssetImage('assets/YML.png'),
+                // image: AssetImage('assets/icon.png'),
                 //NetworkImage(moviesProviders.Estrenos.first.posterPath),
                 imageErrorBuilder: (context, error, stackTrace) =>  Image(
                   image: MemoryImage(
@@ -151,12 +151,12 @@ class _CustomAppBar extends StatelessWidget {
               ),):FadeInImage(
                 fit: BoxFit.fill,
                 placeholder: const AssetImage(
-                  'assets/YML.png',
+                  'assets/icon.png',
             
                 ),
                 image: AssetImage( 'assets/gif/${movie.genreId}.gif'),
                   
-                // image: AssetImage('assets/YML.png'),
+                // image: AssetImage('assets/icon.png'),
                 //NetworkImage(moviesProviders.Estrenos.first.posterPath),
                 imageErrorBuilder: (context, error, stackTrace) =>  Image(
                   image: MemoryImage(
@@ -201,12 +201,12 @@ class _PosterAndTitle extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: FadeInImage(
               fit: BoxFit.cover,
-              placeholder: const AssetImage('assets/YML.png'),
+              placeholder: const AssetImage('assets/icon.png'),
               image:
                   MemoryImage(base64Decode(posterPath)),
               // image: NetworkImage(movie.posterPath),
               imageErrorBuilder: (context, error, stackTrace) => const Image(
-                image: AssetImage('assets/YML.png'),
+                image: AssetImage('assets/icon.png'),
                 height: 150,
                 width: 100,
                 fit: BoxFit.cover,

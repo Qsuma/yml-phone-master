@@ -106,7 +106,7 @@ class SuggestionItems extends StatelessWidget {
         image: MemoryImage(base64Decode(movie.backdropPath.split(',').last)),
         //image: NetworkImage(movie.posterPath),
         imageErrorBuilder: (context, error, stackTrace) => const Image(
-          image: AssetImage('assets/YML.png'),
+          image: AssetImage('assets/icon.png'),
           fit: BoxFit.contain,
         ),
         width: 50,
