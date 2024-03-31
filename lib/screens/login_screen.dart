@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final prefs = PreferenciasUsuario();
   final _usernameController = TextEditingController(text: '');
   final _passwordController = TextEditingController(text: '');
-  bool rememberme = false;
+
 
   bool showpass = true;
   final userRegisterProvider = UserProvider();
@@ -86,7 +86,7 @@ _loginRegistered() async{
     Map info = await userRegisterProvider.loginUser(_usernameController.text, _passwordController.text,model,deviceId);
 
     if (info['ok']) {
-      if (rememberme) {
+      if (prefs.Rememberme) {
         SharedPreferences.getInstance().then((prefs) {
         prefs.setString('deviceId', deviceId);
           prefs.setString('deviceId', deviceId);
@@ -296,9 +296,9 @@ _loginRegistered() async{
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Checkbox(
-          value: rememberme,
+          value: prefs.Rememberme,
           onChanged: (value) => setState(() {
-            rememberme = !rememberme;
+            prefs.Rememberme = !prefs.Rememberme;
           }),
         ),
         Text(ClassLocalizations.of(context).recordar)
@@ -402,7 +402,7 @@ _loginRegistered() async{
     Map info = await userRegisterProvider.loginUser(_usernameController.text, _passwordController.text,model,deviceId);
 
     if (info['ok']) {
-      if (rememberme) {
+      if (prefs.Rememberme) {
         SharedPreferences.getInstance().then((prefs) {
         prefs.setString('deviceId', deviceId);
           prefs.setString('deviceId', deviceId);

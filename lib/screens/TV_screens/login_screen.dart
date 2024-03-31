@@ -36,7 +36,7 @@ class _TVLoginScreenState extends State<TVLoginScreen> {
   final prefs = PreferenciasUsuario();
   final _usernameController = TextEditingController(text: '');
   final _passwordController = TextEditingController(text: '');
-  bool rememberme = false;
+  
 
   bool showpass = true;
   final userRegisterProvider = UserProvider();
@@ -92,7 +92,7 @@ return windowsInfo.productId;}
     Map info = await userRegisterProvider.loginUser(_usernameController.text, _passwordController.text,model,deviceId);
 
    if (info['ok']) {
-      if (rememberme) {
+      if (prefs.Rememberme) {
         SharedPreferences.getInstance().then((prefs) {
         prefs.setString('deviceId', deviceId);
           prefs.setString('deviceId', deviceId);
@@ -311,9 +311,9 @@ return windowsInfo.productId;}
           focusNode:focusNode ,
           widget: Checkbox(
             focusNode:focusNode ,
-            value: rememberme,
+            value: prefs.Rememberme,
             onChanged: (value) => setState(() {
-              rememberme = !rememberme;
+              prefs.Rememberme = !prefs.Rememberme;
             }),
           ),
         ),
@@ -421,7 +421,7 @@ return windowsInfo.productId;}
    Map info = await userRegisterProvider.loginUser(_usernameController.text, _passwordController.text,model,deviceId);
 
     if (info['ok']) {
-      if (rememberme) {
+      if (prefs.Rememberme) {
         SharedPreferences.getInstance().then((prefs) {
          prefs.setString('deviceId', deviceId);
           prefs.setString('deviceId', deviceId);

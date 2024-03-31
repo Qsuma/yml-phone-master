@@ -75,7 +75,7 @@ class MenuDrawer extends StatelessWidget {
                     style: const TextStyle(fontSize: 16, color: Colors.white70),
                   ),
                   onTap: () {
-                    const HomeSreen();
+                    Navigator.push(context, crearRuta(const HomeSreen(), const Duration(milliseconds: 300)));
                   }),
             
             
@@ -84,6 +84,7 @@ class MenuDrawer extends StatelessWidget {
                   title: Text(ClassLocalizations.of(context).Cerrar,style: const TextStyle(fontSize: 16, color: Colors.white70),),
                   leading: const Icon(Icons.exit_to_app,color: Colors.red,),
                   onTap: () {
+                    prefs.Rememberme=false;
                     prefs.password = '';
                     prefs.usuario = '';
                     prefs.Token='';

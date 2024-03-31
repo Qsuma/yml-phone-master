@@ -87,4 +87,11 @@ class PreferenciasUsuario {
   set Devices(String value) {
     _globals.setString('Devices', value);
   }
+  bool get Rememberme {
+    return _globals.getBool('rememberme') ?? false;
+  }
+
+  set Rememberme(bool value) {
+    _globals.setBool('rememberme', value);
+  }
 }

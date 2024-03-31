@@ -1,9 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-
+import 'package:yml/screens/TV_screens/details_screens.dart';
+import 'dart:io';
 import '../generated/l10n.dart';
 import '../models/movie.dart';
 import '../models/route_animation.dart';
@@ -114,11 +118,17 @@ class SuggestionItems extends StatelessWidget {
       ),
       title: Text(movie.title),
       subtitle: Text(movie.originalTitle),
-      onTap: () => Navigator.push(
-        context,
+      onTap: () async { 
+       
+   
+        Navigator.push(
+        context,(Platform.isWindows||MediaQuery.of(context).size.height>MediaQuery.of(context).size.width)?
         crearRuta(
-            DetailsScreen(movie: movie), const Duration(milliseconds: 700)),
-      ),
+          
+             DetailsScreen(movie: movie), const Duration(milliseconds: 700)):crearRuta(
+          
+             TVDetailsScreen(movie: movie), const Duration(milliseconds: 700)),
+      );}
     );
   }
 }

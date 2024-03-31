@@ -135,10 +135,10 @@ class MoviesProviders extends ChangeNotifier {
       final results = await searchMovies(value);
       _suggestionStreamController.add(results);
     };
-    final timer = Timer.periodic(const Duration(milliseconds: 300), (_) {
+    final timer = Timer.periodic(const Duration(milliseconds: 1000), (_) {
       debouncer.value = SearchTerm;
     });
-    Future.delayed(const Duration(milliseconds: 301))
+    Future.delayed(const Duration(milliseconds: 1001))
         .then((_) => timer.cancel());
   }
     int  posicion(String Idgenero){
