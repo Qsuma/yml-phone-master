@@ -109,6 +109,7 @@ _listener() {
     // Elimina los listeners y libera los recursos
     _controller.removeListener(_listener);
     _controller.dispose();
+
     super.dispose();
   }
   

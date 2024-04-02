@@ -66,6 +66,7 @@ class _ChewiePlayerState extends State<ChewiePlayer> {
      // ),
       autoPlay: true,
       looping: true,
+      fullScreenByDefault: true
     );    
   }
 
