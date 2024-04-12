@@ -91,6 +91,21 @@ class TVHomeSreenState extends State<TVHomeSreen> {
        Row(
         children:[
           ShortcutController(
+            focusNode: FocusNode(),
+            widget: IconButton(
+              splashRadius: 20,
+              focusColor: const Color.fromARGB(134, 132, 132, 132),
+                  icon: const Icon(Icons.home),
+                  onPressed: () {
+                    scrollController.animateTo(
+            0.0,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+                    );
+                  },
+                ),
+          ),
+          ShortcutController(
             focusNode: focusNode1,
             widget: IconButton(
               focusNode: focusNode1,
@@ -107,6 +122,7 @@ class TVHomeSreenState extends State<TVHomeSreen> {
       ],
     );
     SliverAppBar sliverAppBar = SliverAppBar(
+    
       iconTheme: const IconThemeData(color: Colors.red),
      leading: Builder(
       builder: (context) {
@@ -152,7 +168,7 @@ class TVHomeSreenState extends State<TVHomeSreen> {
             child: DecoratedBox(
             
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(stops: [0.1, 0.1],
+                    gradient: LinearGradient(stops: [0.2, 0.2],
                         begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                         colors:[Color.fromARGB(169, 0, 0, 0), Color.fromARGB(0, 255, 255, 255)]))),
@@ -177,7 +193,7 @@ class TVHomeSreenState extends State<TVHomeSreen> {
               SliverList(
                   delegate: SliverChildListDelegate([
                 CarouselSlider(
-                  options: CarouselOptions(height: 80.0),
+                  options: CarouselOptions(    autoPlayCurve: Curves.bounceIn,height: 80.0),
                   items: generos.map((genre) {
                     return Builder(
                       builder: (BuildContext context) {
@@ -233,16 +249,16 @@ class TVHomeSreenState extends State<TVHomeSreen> {
                 const SizedBox(
                   height: 10,
                 ),
-               (selectedGenreId=='All' )? TVMovieSlider(
-                Page: 'Home',
+              //  (selectedGenreId=='All' )? TVMovieSlider(
+              //   Page: 'Home',
                 
-                  onNextPage: (){
-                    moviesProviders.getEstrenosMovies();
-                  },
-                  heroId: 'hometv',
-                  movies: moviesProviders.Estrenos,
-                  title: ClassLocalizations.of(context).estrenos,
-                ):Container(),
+              //     onNextPage: (){
+              //       moviesProviders.getEstrenosMovies();
+              //     },
+              //     heroId: 'hometv',
+              //     movies: moviesProviders.Estrenos,
+              //     title: ClassLocalizations.of(context).estrenos,
+              //   ):Container(),
                 const SizedBox(
                   height: 30,
                 )

@@ -72,6 +72,16 @@ class _HomeSreenState extends State<HomeSreen> {
         ),
        Row(
         children:[
+           IconButton(
+      icon: const Icon(Icons.home),
+      onPressed: () {
+        scrollController.animateTo(
+          0.0,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      },
+    ),
           IconButton(
               
               splashRadius: 20,
@@ -114,6 +124,7 @@ class _HomeSreenState extends State<HomeSreen> {
       ],
     );
     SliverAppBar sliverAppBar = SliverAppBar(
+      
       iconTheme: const IconThemeData(color: Colors.red),
      leading: Builder(
       builder: (context) {
@@ -141,22 +152,23 @@ class _HomeSreenState extends State<HomeSreen> {
             
                 ),
                 image: AssetImage( 'assets/gif/${selectedGenreId}.gif'),
-                  
-                // image: AssetImage('assets/icon.png'),
-                //NetworkImage(moviesProviders.Estrenos.first.posterPath),
+               
                 imageErrorBuilder: (context, error, stackTrace) =>  Image(
-                  image:(selectedMovies.isNotEmpty)? MemoryImage(
-                            base64Decode(selectedMovies.first.backdropPath.split(',').last)) as ImageProvider:AssetImage('assets/splash.gif'),
-                  fit: BoxFit.fill,
+                  image:
+                  (selectedMovies.isNotEmpty)? MemoryImage(
+                        base64Decode(selectedMovies.first.backdropPath.split(',').last)) as ImageProvider
+                        :
+                        AssetImage('assets/YML.png'),
+                  fit: BoxFit.cover,
                 ),
               ),
-          //VideoSelecter(genreID:selectedMovies[0].genreId ),
+
           Padding(
             padding: EdgeInsetsDirectional.only(top: 0),
             child: DecoratedBox(
             
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(stops: [0.1, 0.1],
+                    gradient: LinearGradient(stops: [0.2, 0.2],
                         begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                         colors:(Platform.isWindows)? [Color.fromARGB(204, 0, 0, 0), Color.fromARGB(0, 255, 255, 255)]:[Color.fromARGB(169, 0, 0, 0), Color.fromARGB(0, 255, 255, 255)]))),
@@ -236,17 +248,17 @@ class _HomeSreenState extends State<HomeSreen> {
                 const SizedBox(
                   height: 10,
                 ),
-               (selectedGenreId=='All' )? MovieSlider(
-                Page: 'Home',
-                  onNextPage: (){
-                    moviesProviders.getEstrenosMovies();
-                  },
-                  //(selectedGenreId !='All')? moviesProviders.Aumentar_Numero(selectedGenreId):moviesProviders.getEstrenosMovies(),
-                  heroId: 'hometv',
-                  movies: moviesProviders.Estrenos,
-                  title: ClassLocalizations.of(context).estrenos,
-                 // onNextPage: () => moviesProviders.Estrenos,
-                ):Container(),
+              //  (selectedGenreId=='All' )? MovieSlider(
+              //   Page: 'Home',
+              //     onNextPage: (){
+              //       moviesProviders.getEstrenosMovies();
+              //     },
+              //     //(selectedGenreId !='All')? moviesProviders.Aumentar_Numero(selectedGenreId):moviesProviders.getEstrenosMovies(),
+              //     heroId: 'hometv',
+              //     movies: moviesProviders.Estrenos,
+              //     title: ClassLocalizations.of(context).estrenos,
+              //    // onNextPage: () => moviesProviders.Estrenos,
+              //   ):Container(),
                 const SizedBox(
                   height: 30,
                 )

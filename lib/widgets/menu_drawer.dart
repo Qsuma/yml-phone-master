@@ -25,6 +25,7 @@ class MenuDrawer extends StatelessWidget {
     final screensize = MediaQuery.of(context).size;
     //final moviesProviders = Provider.of<MoviesProviders>(context);
     //final size = MediaQuery.of(context).size;
+   // final ScrollController scrollController;
     if (screensize.width >= 500) {}
     return Drawer(
       backgroundColor: const Color.fromARGB(255, 54, 53, 53).withOpacity(1),
@@ -65,18 +66,22 @@ class MenuDrawer extends StatelessWidget {
                   onTap: () => showSearch(
                       context: context, delegate: movieSearchDelegate())),
             
-            ListTile(
-                  leading: const Icon(
-                    Icons.home,
-                    color: Colors.red,
-                  ),
-                  title: Text(
-                    ClassLocalizations.of(context).home,
-                    style: const TextStyle(fontSize: 16, color: Colors.white70),
-                  ),
-                  onTap: () {
-                    Navigator.push(context, crearRuta(const HomeSreen(), const Duration(milliseconds: 300)));
-                  }),
+        //     ListTile(
+        //           leading: const Icon(
+        //             Icons.home,
+        //             color: Colors.red,
+        //           ),
+        //           title: Text(
+        //             ClassLocalizations.of(context).home,
+        //             style: const TextStyle(fontSize: 16, color: Colors.white70),
+        //           ),
+        //           onTap: () {
+        //             scrollController.animateTo(
+        //   0.0,
+        //   duration: const Duration(milliseconds: 500),
+        //   curve: Curves.easeInOut,
+        // );
+        //           }),
             
             
                ListTile(

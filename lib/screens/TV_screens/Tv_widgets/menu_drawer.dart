@@ -74,21 +74,21 @@ class _TVMenuDrawerState extends State<TVMenuDrawer> {
                   onTap: () => showSearch(
                       context: context, delegate: movieSearchDelegate())),
             ),
-            ShortcutController(
-              focusNode: FocusNode(),
-              widget: ListTile(
-                  leading: const Icon(
-                    Icons.home,
-                    color: Colors.red,
-                  ),
-                  title: Text(
-                    ClassLocalizations.of(context).home,
-                    style: const TextStyle(fontSize: 16, color: Colors.white70),
-                  ),
-                  onTap: () {
-                    TVHomeSreen(Usuario:widget.Usuario,);
-                  }),
-            ),
+            // ShortcutController(
+            //   focusNode: FocusNode(),
+            //   widget: ListTile(
+            //       leading: const Icon(
+            //         Icons.home,
+            //         color: Colors.red,
+            //       ),
+            //       title: Text(
+            //         ClassLocalizations.of(context).home,
+            //         style: const TextStyle(fontSize: 16, color: Colors.white70),
+            //       ),
+            //       onTap: () {
+            //         Navigator.pushReplacement(context, crearRuta(TVHomeSreen(Usuario:widget.Usuario,), Duration(milliseconds: 700)));
+            //       }),
+            // ),
             
                 ShortcutController(
                   focusNode: FocusNode(),
@@ -98,6 +98,7 @@ class _TVMenuDrawerState extends State<TVMenuDrawer> {
                   leading: const Icon(Icons.exit_to_app,color: Colors.red,),
                   onTap: () {
                     UserProvider().Deletedevice(widget.Usuario,prefs.model, prefs.deviceId).then((value) => Navigator.pop(context));
+                    prefs.Rememberme=false;
                     prefs.password = '';
                     prefs.usuario = '';
                     prefs.Token='';
