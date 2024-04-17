@@ -68,7 +68,8 @@ class TVHomeSreenState extends State<TVHomeSreen> {
   @override
   Widget build(BuildContext context) {
  
-    
+    final CarouselController _carouselController = CarouselController();
+ final PageController _pageController = PageController();
     final moviesProviders = Provider.of<MoviesProviders>(context);
     final generosProviders = Provider.of<GeneroProvider>(context);
   
@@ -77,6 +78,14 @@ class TVHomeSreenState extends State<TVHomeSreen> {
     if (selectedGenreId != 'All') {
       selectedMovies = selectedGenderMovies;
     }
+     void _centerSelectedItem(int index) {
+    _pageController.animateToPage(
+      index,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeIn,
+    );
+ }
+
 
     Row rowTittle = Row(
       
@@ -193,14 +202,20 @@ class TVHomeSreenState extends State<TVHomeSreen> {
               SliverList(
                   delegate: SliverChildListDelegate([
                 CarouselSlider(
-                  options: CarouselOptions(    autoPlayCurve: Curves.bounceIn,height: 80.0),
+                  options: CarouselOptions(  
+                
+                    
+                   
+                  
+                    viewportFraction: 0.33,
+                      autoPlayCurve: Curves.bounceIn,height: 80.0),
                   items: generos.map((genre) {
                     return Builder(
                       builder: (BuildContext context) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
-                            width: MediaQuery.of(context).size.width,
+                            width: MediaQuery.of(context).size.width*0.33,
                             margin: const EdgeInsets.symmetric(
                                 horizontal: 5.0, vertical: 2),
                             decoration: const BoxDecoration(
@@ -224,7 +239,9 @@ class TVHomeSreenState extends State<TVHomeSreen> {
                                       color: Colors.white, fontSize: 24),
                                 ),
                                 onPressed: () {
+                                
                                   setState(() {
+                                    
                                     selectedGenreId = genre.id;
                                     if (genre.id != 'All') {
                                       selectedGenderMovies = moviesProviders
@@ -307,8 +324,8 @@ class _SliderVerticalState extends State<SliderVertical> {
   }
   _listener() async {
   
-if (widget.scrollController.position.pixels ==
-          widget.scrollController.position.maxScrollExtent && _isLoading ==false) {
+if (widget.scrollController.position.pixels >=
+          widget.scrollController.position.maxScrollExtent-100 && _isLoading ==false) {
              widget.onNextPage();  
             setState(() {
              _isLoading =true; 
