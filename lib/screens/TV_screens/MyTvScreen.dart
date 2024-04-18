@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 
 import 'package:video_player/video_player.dart';
 import 'package:yml/globals/globals.dart';
+import 'package:yml/screens/TV_screens/HomeScreen.dart';
+import 'package:yml/screens/screens/HomeScreen.dart';
 import 'package:yml/widgets/raw_listener.dart';
 import 'package:yml/widgets/reproductor/Modulo_Stream_Windows.dart';
 
@@ -22,6 +24,8 @@ class MyTvScreen extends StatefulWidget {
   _MyTvScreenState createState() => _MyTvScreenState();
 }
 class _MyTvScreenState extends State<MyTvScreen> {
+ late Duration tiempo ;
+  int contador=0;
   
   late VideoPlayerController _controller;
   bool menuVisible =false;
@@ -45,7 +49,7 @@ _listener() {
   }
   @override
   @override
-  void initState() {
+   initState() {
     super.initState();
 
     // Configura el controlador para que se inicialice automáticamente
@@ -60,10 +64,73 @@ _listener() {
 
     // Agrega un listener para manejar los errores
     _controller.addListener(() {
+      Duration duartion2m = Duration(minutes: 2);
+
+       if(
+        !_controller.value.hasError
+        &&
+        _controller.value.position>duartion2m
+        )
+        {
+          tiempo=  _controller.value.position;}
+
       if (_controller.value.hasError) {
-        error = true;
-        PPrint("Error al inicializar el controlador de video: ${_controller.value.errorDescription}");
-        // Aquí podrías implementar una lógica para manejar el error, como mostrar un diálogo al usuario
+
+     
+     if(contador==1){
+PPrint("Error al inicializar el controlador de video: ${_controller.value.errorDescription}");
+      showDialog(context: context, builder:(context) => AlertDialog(
+            backgroundColor: Colors.white70.withOpacity(1),
+            title: Center(
+                child: Text(
+              'Error al Reproducir: ${_controller.value.errorDescription}',
+              style: const TextStyle(color: Colors.red),
+            )),
+            actions: [
+              TextButton(
+                  onPressed: (() {
+            
+                 contador=0;
+            
+                  _controller.initialize().then((_) {
+               _controller.play();
+               _controller.seekTo(tiempo);
+                 
+                });
+                   
+                    Navigator.pop(context);
+                  }),
+                  child: const Center(
+                    child: Text(
+                      'Reintentar',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  )),
+            TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TVHomeSreen(Usuario: prefs.usuario,),));
+                 
+                      contador=0;
+                  
+                  },
+                  child: const Center(
+                    child: Text(
+                      'Atras',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  ))
+            ],
+          ),);
+      }else{
+      
+        contador++;
+        _controller.initialize().then((_) {
+                 _controller.play(); 
+               _controller.seekTo(tiempo);
+                 
+                });
+      }
+   
       }
     });
 
@@ -76,32 +143,33 @@ _listener() {
 
       // Actualiza el estado de la UI
       setState(() {});
-    }).catchError((error) {
-      print('ERROR $error');
-     showDialog(context: context, builder:(context) => AlertDialog(
-            backgroundColor: Colors.white70.withOpacity(1),
-            title: Center(
-                child: Text(
-              'Error al Reproducir',
-              style: const TextStyle(color: Colors.red),
-            )),
-            content: Text(
-              'Error:${error}',
-              style: const TextStyle(fontSize: 20),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: (() => Navigator.of(context).pop()),
-                  child: const Center(
-                    child: Text(
-                      'Ok',
-                      style: TextStyle(fontSize: 17),
-                    ),
-                  ))
-            ],
-          ),);
-      // Aquí podrías implementar una lógica para manejar el error, como mostrar un diálogo al usuario
-    });
+     });
+    //.catchError((error) {
+    //   PPrint('ERROR $error');
+    //  showDialog(context: context, builder:(context) => AlertDialog(
+    //         backgroundColor: Colors.white70.withOpacity(1),
+    //         title: Center(
+    //             child: Text(
+    //           'Error al Reproducir',
+    //           style: const TextStyle(color: Colors.red),
+    //         )),
+    //         content: Text(
+    //           'Error:${error}',
+    //           style: const TextStyle(fontSize: 20),
+    //         ),
+    //         actions: [
+    //           TextButton(
+    //               onPressed: (() => Navigator.of(context).pop()),
+    //               child: const Center(
+    //                 child: Text(
+    //                   'Ok',
+    //                   style: TextStyle(fontSize: 17),
+    //                 ),
+    //               ))
+    //         ],
+    //       ),);
+    //   // Aquí podrías implementar una lógica para manejar el error, como mostrar un diálogo al usuario
+    // });
   }
 
   @override

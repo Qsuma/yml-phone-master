@@ -48,7 +48,7 @@ class MoviesProviders extends ChangeNotifier {
     final url = Uri.http(_baseURL, endpoint, {
       
       'page': '$page',
-      'limit': '6'
+      'limit': '12'
     });
  PPrint(url);
     final response =  await http.get(url, headers: {

@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:yml/globals/globals.dart';
 import 'package:yml/screens/TV_screens/Tv_widgets/menu_drawer.dart';
@@ -37,6 +38,7 @@ class TVHomeSreenState extends State<TVHomeSreen> {
   final FocusNode focusNode1 = FocusNode();
   final FocusNode focusNode2 = FocusNode();
   final FocusNode focusNode3 = FocusNode();
+  final FocusNode focusNode4 = FocusNode();
   bool ismaximaced =false;
   String selectedGenreId = 'All';
   List<Movie> selectedGenderMovies = [];
@@ -46,9 +48,12 @@ class TVHomeSreenState extends State<TVHomeSreen> {
     focusNode1.addListener(_listener);
     focusNode2.addListener(_listener);
     focusNode3.addListener(_listener);
+    focusNode4.addListener(_listener);
     super.initState();
   }
+  
   _listener() {
+    
     scrollController.animateTo(0, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
   }
   @override
@@ -57,18 +62,19 @@ class TVHomeSreenState extends State<TVHomeSreen> {
   focusNode1.removeListener(_listener);
   focusNode2.removeListener(_listener);
   focusNode3.removeListener(_listener);
+    focusNode4.removeListener(_listener);
   
     focusNode.dispose();
     focusNode1.dispose();
     focusNode2.dispose();
     focusNode3.dispose();
+    focusNode4.dispose();
     
     super.dispose();
   }
   @override
   Widget build(BuildContext context) {
  
-    final CarouselController _carouselController = CarouselController();
  final PageController _pageController = PageController();
     final moviesProviders = Provider.of<MoviesProviders>(context);
     final generosProviders = Provider.of<GeneroProvider>(context);
@@ -188,104 +194,131 @@ class TVHomeSreenState extends State<TVHomeSreen> {
     return WillPopScope(
        onWillPop: () => Future.value(false),
       child: SafeArea(
-        child: Scaffold(
-        
-            drawerScrimColor: const Color.fromARGB(39, 247, 246, 246),
-            backgroundColor: const Color.fromARGB(0, 42, 41, 41).withOpacity(1),
-            drawer:  TVMenuDrawer(Usuario: widget.Usuario,),
-            body:  CustomScrollView(
-              controller: scrollController,
-    
-                  slivers: [
-                  
-              sliverAppBar,
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                CarouselSlider(
-                  options: CarouselOptions(  
-                
+        child: RawKeyboardListener(
+          focusNode: focusNode4,
+          onKey: (event) {
+             if (event is RawKeyDownEvent) {
+         
+                if(event.logicalKey.keyLabel=="Arrow Down"&& scrollController.position.pixels >=scrollController.position.maxScrollExtent-100){
+                  setState(() {
+                    moviesProviders.getGenderMovies(selectedGenreId).then((_){
+                      scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeOut,
+    ); 
+                    } );
+                  });
+                }}
+          },
+          child: Scaffold(
+          
+              drawerScrimColor: const Color.fromARGB(39, 247, 246, 246),
+              backgroundColor: const Color.fromARGB(0, 42, 41, 41).withOpacity(1),
+              drawer:  TVMenuDrawer(Usuario: widget.Usuario,),
+              body:  CustomScrollView(
+                controller: scrollController,
+              
+                    slivers: [
                     
-                   
+                sliverAppBar,
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                  CarouselSlider(
+                    options: CarouselOptions(  
                   
-                    viewportFraction: 0.33,
-                      autoPlayCurve: Curves.bounceIn,height: 80.0),
-                  items: generos.map((genre) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width*0.33,
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 5.0, vertical: 2),
-                            decoration: const BoxDecoration(
-                                color: Color.fromARGB(255, 125, 17, 17),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                            child: ShortcutController(
-                              focusNode: FocusNode(),
-                              widget: TextButton(
-                                style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(18.0),
-                                            side: const BorderSide(
-                                                color:
-                                                    Color.fromARGB(179, 0, 0, 0))))),
-                                child: Text(
-                                  genre.genre,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 24),
+                      
+                     
+                    
+                      viewportFraction: 0.33,
+                        autoPlayCurve: Curves.bounceIn,height: 80.0),
+                    items: generos.map((genre) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width*0.33,
+                              margin:  EdgeInsets.symmetric(
+                                  horizontal: 5.0, vertical: 2),
+                              decoration:  BoxDecoration(
+                                  color: (genre.id==selectedGenreId)? Color.fromARGB(255, 22, 0, 0):Color.fromARGB(255, 125, 17, 17),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              child: ShortcutController(
+                                focusNode: FocusNode(),
+                                widget: TextButton(
+                                  
+                                  style: ButtonStyle(
+                                   overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                (Set<MaterialState> states) {
+          if (states.contains(MaterialState.focused)) {
+            return Colors.red; // Cambia esto al color que desees para el foco
+          }
+          return null; // Usa el color predeterminado para otros estados
+                },
+              ),
+                                      shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(18.0),
+                                              side: const BorderSide(
+                                                  color:
+                                                      Color.fromARGB(179, 0, 0, 0))))),
+                                  child: Text(
+                                    genre.genre,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 24),
+                                  ),
+                                  onPressed: () {
+                                  
+                                    setState(() {
+                                      
+                                      selectedGenreId = genre.id;
+                                      if (genre.id != 'All') {
+                                        selectedGenderMovies = moviesProviders
+                                            .Todo[generos.indexOf(genre)];
+                                      }
+                              
+                                      // else selectedMovies = moviesProviders.Estrenos;
+                                    });
+                              
+                                  },
                                 ),
-                                onPressed: () {
-                                
-                                  setState(() {
-                                    
-                                    selectedGenreId = genre.id;
-                                    if (genre.id != 'All') {
-                                      selectedGenderMovies = moviesProviders
-                                          .Todo[generos.indexOf(genre)];
-                                    }
-                            
-                                    // else selectedMovies = moviesProviders.Estrenos;
-                                  });
-                            
-                                },
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  }).toList(),
-                ),
-              ])),
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                const SizedBox(
-                  height: 10,
-                ),
-              //  (selectedGenreId=='All' )? TVMovieSlider(
-              //   Page: 'Home',
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ])),
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                  const SizedBox(
+                    height: 10,
+                  ),
+                //  (selectedGenreId=='All' )? TVMovieSlider(
+                //   Page: 'Home',
+                  
+                //     onNextPage: (){
+                //       moviesProviders.getEstrenosMovies();
+                //     },
+                //     heroId: 'hometv',
+                //     movies: moviesProviders.Estrenos,
+                //     title: ClassLocalizations.of(context).estrenos,
+                //   ):Container(),
+                  const SizedBox(
+                    height: 30,
+                  )
+                ])),
+                SliderVertical(selectedMovies:(selectedGenreId=='All')?moviesProviders.Estrenos :
+                moviesProviders.Todo[moviesProviders.posicion(selectedGenreId)],onNextPage:  (){(selectedGenreId=='All')?moviesProviders.getEstrenosMovies() :
+                moviesProviders.Aumentar_Numero(selectedGenreId);}, scrollController: scrollController,),
                 
-              //     onNextPage: (){
-              //       moviesProviders.getEstrenosMovies();
-              //     },
-              //     heroId: 'hometv',
-              //     movies: moviesProviders.Estrenos,
-              //     title: ClassLocalizations.of(context).estrenos,
-              //   ):Container(),
-                const SizedBox(
-                  height: 30,
-                )
+               
               ])),
-              SliderVertical(selectedMovies:(selectedGenreId=='All')?moviesProviders.Estrenos :
-              moviesProviders.Todo[moviesProviders.posicion(selectedGenreId)],onNextPage:  (){(selectedGenreId=='All')?moviesProviders.getEstrenosMovies() :
-              moviesProviders.Aumentar_Numero(selectedGenreId);}, scrollController: scrollController,)
-      
-            
-            ])),
+        ),
       ),
     );
     //  }
@@ -323,17 +356,20 @@ class _SliderVerticalState extends State<SliderVertical> {
     widget.scrollController.addListener(_listener);
   }
   _listener() async {
-  
-if (widget.scrollController.position.pixels >=
-          widget.scrollController.position.maxScrollExtent-100 && _isLoading ==false) {
-             widget.onNextPage();  
+      
+   if  (widget.scrollController.position.pixels >=
+          widget.scrollController.position.maxScrollExtent-100
+           && _isLoading ==false
+           ) {
+            // ignore: await_only_futures
+            widget.onNextPage();  
             setState(() {
              _isLoading =true; 
             });
      
     
     // (widget.genderId=='All')? await _estrenos():widget.selectedMovies.addAll(await MoviesProviders().getGenderMovies(widget.genderId,page: page));
-    setState(() {
+     setState(() {
     _isLoading =false;
     page++;
    
@@ -341,6 +377,8 @@ if (widget.scrollController.position.pixels >=
     
         
       }
+      
+      
      
   }
 @override
@@ -369,7 +407,7 @@ if (widget.scrollController.position.pixels >=
                     )),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           childAspectRatio: 0.6,
-          mainAxisSpacing:  2,
+          mainAxisSpacing:  8,
           crossAxisSpacing: 10,
           crossAxisCount:   6,
         ));
@@ -409,6 +447,26 @@ class MoviePoster2 extends StatelessWidget {
     
 
       widget: TextButton(
+        
+        style: ButtonStyle(
+          
+          overlayColor: MaterialStateProperty.resolveWith<Color?>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.focused)) {
+          return Colors.red; // Cambia esto al color que desees para el foco
+        }
+        return null; // Usa el color predeterminado para otros estados
+      },
+    ),
+     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+          side: BorderSide(
+            color: Color.fromARGB(179, 0, 0, 0),
+          ),
+        ),
+      ),
+        ),
         autofocus: false,
        onPressed: () {
          Navigator.push(
@@ -446,12 +504,12 @@ class MoviePoster2 extends StatelessWidget {
                         //NetworkImage(moviefinal.posterPath),
                         imageErrorBuilder: (context, error, stackTrace) => Image(
                           image: const AssetImage('assets/icon.png'),
-                          height: 260,
-                          width: MediaQuery.of(context).size.width * 0.45,
+                          height: 200,
+                          width: MediaQuery.of(context).size.width * 0.50,
                           fit: BoxFit.contain,
                         ),
-                        width:  MediaQuery.of(context).size.width * 0.45,
-                        height: 190, //imagen
+                        width:  MediaQuery.of(context).size.width * 0.50,
+                        height: 200, //imagen
                         fit: BoxFit.cover
                       ),
                     ),
