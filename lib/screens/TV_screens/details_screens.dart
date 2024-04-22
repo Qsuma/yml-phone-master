@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:string_validator/string_validator.dart';
 import 'package:yml/models/generos.dart';
 import 'package:yml/models/movie.dart';
 import 'package:yml/providers/generos_provider.dart';
@@ -12,6 +13,8 @@ import 'package:yml/screens/TV_screens/Tv_widgets/movie_slider.dart';
 import 'package:yml/src/preferencias_usuario.dart';
 import 'package:yml/widgets/raw_listener.dart';
 import 'package:yml/widgets/videowidgetlocal.dart';
+
+import '../../globals/globals.dart';
 
 final prefs = PreferenciasUsuario();
 class TVDetailsScreen extends StatefulWidget {
@@ -197,8 +200,16 @@ return Future.value(
   Widget build(BuildContext context) {
     // final subtitlesProvider =
     // SubtitlesProvider(movie.id!, ClassLocalizations().idioma);
-    
-    final String posterPath= movie.posterPath.split(',').last;
+    ImageProvider checkImage(Movie moviefinal) {
+      PPrint (moviefinal);
+      if (isBase64(moviefinal.backdropPath.split(',').last)){
+        return MemoryImage(
+            base64Decode(moviefinal.backdropPath.split(',').last));
+      }else {
+        return const AssetImage('assets/icon.png');
+      }
+    }
+    final String posterPath= checkImage(movie).toString();
     
     return Container(
       height: MediaQuery.of(context).size.height*0.3,
@@ -214,8 +225,7 @@ return Future.value(
               'assets/loading.gif',
         
             ),
-            image: MemoryImage(
-                    base64Decode(posterPath)),
+            image:checkImage(movie),
             imageErrorBuilder: (context, error, stackTrace) => const Image(
               image: AssetImage('assets/icon.png'),
               fit: BoxFit.contain,

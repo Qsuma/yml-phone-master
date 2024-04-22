@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -50,12 +51,12 @@ class MoviesProviders extends ChangeNotifier {
       'page': '$page',
       'limit': '12'
     });
- PPrint(url);
+    PPrint(url);
     final response =  await http.get(url, headers: {
       'auth-token': prefs.Token
       
       
-      }).timeout(Duration(seconds: 45),onTimeout: () {
+      }).timeout(const Duration(seconds: 45),onTimeout: () {
    
     return http.Response('Error', 408); 
   } );
@@ -72,7 +73,7 @@ class MoviesProviders extends ChangeNotifier {
     notifyListeners();
     if(TodasPage ==1){ await getTodo();
    }
-   PPrint('GET ESTENOS Y LA PAGINA ES $TodasPage');
+   PPrint('GET ESTENOS Y FLA PAGINA ES $TodasPage');
      notifyListeners();
     return nowPlayingResponse.results;
   }
@@ -109,11 +110,29 @@ class MoviesProviders extends ChangeNotifier {
 
     var jsonData =
         await _getJsonData('/movies/filter/$genderId', Paginas[posicion(genderId)]);
-    var GenreResponse = ListaPeliculas.fromJson(jsonData);
-  
+    try{
+      var a=json.decode(jsonData);
+    }catch(e){
+        // No es json válido()
+         //print(jsonData);
+        // print(e);
+    }
+      var GenreResponse;
+    if (jsonData!="{}"){
+     GenreResponse = ListaPeliculas.fromJson(jsonData);
+     return GenreResponse.results; 
+    }else{
+      Paginas[posicion(genderId)]++;
+
+      jsonData =
+      await _getJsonData('/movies/filter/$genderId', Paginas[posicion(genderId)]);
+
+      GenreResponse = ListaPeliculas.fromJson(jsonData);
+    }
  PPrint('GET Genders Y LA PAGINA ES ${Paginas[posicion(genderId)]}');
    // notifyListeners();
-    return GenreResponse.results;
+      return GenreResponse.results;
+    //return GenreResponse.results;
   }
 
   Future<List<Movie>> searchMovies(String query) async {

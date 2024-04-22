@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final deviceInfo = DeviceInfoPlugin();
   if (Platform.isAndroid) {
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    print('Modelo del dispositivo: ${androidInfo.model}');
+    //print('Modelo del dispositivo: ${androidInfo.model}');
     return androidInfo.model;
   } else if (Platform.isIOS) {
     IosDeviceInfo iosInfo = await deviceInfo.iosInfo;

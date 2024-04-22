@@ -64,11 +64,11 @@ class _TVLoginScreenState extends State<TVLoginScreen> {
   final deviceInfo = DeviceInfoPlugin();
   if (Platform.isAndroid) {
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    print('Modelo del dispositivo: ${androidInfo.model}');
+    //print('Modelo del dispositivo: ${androidInfo.model}');
     return androidInfo.model;
   } else if (Platform.isIOS) {
     IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-    print('Modelo del dispositivo: ${iosInfo.utsname.machine}');
+    //print('Modelo del dispositivo: ${iosInfo.utsname.machine}');
     return iosInfo.model;
   }
   WindowsDeviceInfo windowsInfo = await deviceInfo.windowsInfo;

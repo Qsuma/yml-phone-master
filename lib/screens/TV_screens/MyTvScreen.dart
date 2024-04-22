@@ -78,12 +78,12 @@ _listener() {
 
      
      if(contador==1){
-PPrint("Error al inicializar el controlador de video: ${_controller.value.errorDescription}");
+        PPrint("Error al inicializar el controlador de video: ${_controller.value.errorDescription}");
       showDialog(context: context, builder:(context) => AlertDialog(
             backgroundColor: Colors.white70.withOpacity(1),
             title: Center(
                 child: Text(
-              'Error al Reproducir: ${_controller.value.errorDescription}',
+              'Error al Reproducir: ${_controller.value.errorDescription},',
               style: const TextStyle(color: Colors.red),
             )),
             actions: [
@@ -125,7 +125,7 @@ PPrint("Error al inicializar el controlador de video: ${_controller.value.errorD
       
         contador++;
         _controller.initialize().then((_) {
-                 _controller.play(); 
+                _controller.play();
                _controller.seekTo(tiempo);
                  
                 });

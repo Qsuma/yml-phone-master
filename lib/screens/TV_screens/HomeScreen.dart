@@ -3,25 +3,19 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:yml/globals/globals.dart';
 import 'package:yml/screens/TV_screens/Tv_widgets/menu_drawer.dart';
-import 'package:yml/screens/TV_screens/Tv_widgets/movie_slider.dart';
 import 'package:yml/screens/TV_screens/details_screens.dart';
-
+import 'package:string_validator/string_validator.dart';
 import 'package:yml/widgets/raw_listener.dart';
-import 'package:yml/widgets/videowidgetlocal.dart';
-import '../../generated/l10n.dart';
+import '../../globals/globals.dart';
 import '../../models/generos.dart';
 import '../../models/movie.dart';
 import '../../models/route_animation.dart';
 import '../../providers/generos_provider.dart';
 import '../../providers/movie_providers.dart';
 import '../../search/search_delegate.dart';
-import '../../widgets/menu_drawer.dart';
-import '../../widgets/movie_slider.dart';
-import '../details_screens.dart';
 import 'dart:convert';
-import 'dart:typed_data';
+
 
 
 class TVHomeSreen extends StatefulWidget {
@@ -53,16 +47,19 @@ class TVHomeSreenState extends State<TVHomeSreen> {
   }
   
   _listener() {
-    
+
     scrollController.animateTo(0, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+  }
+  _listenerPelisToGeneros(){
+   PPrint('Lista de Pelis To generos ');
   }
   @override
   void dispose() {
   focusNode.removeListener(_listener);
   focusNode1.removeListener(_listener);
   focusNode2.removeListener(_listener);
-  focusNode3.removeListener(_listener);
-    focusNode4.removeListener(_listener);
+  focusNode3.removeListener(_listenerPelisToGeneros);
+  focusNode4.removeListener(_listener);
   
     focusNode.dispose();
     focusNode1.dispose();
@@ -75,7 +72,6 @@ class TVHomeSreenState extends State<TVHomeSreen> {
   @override
   Widget build(BuildContext context) {
  
- final PageController _pageController = PageController();
     final moviesProviders = Provider.of<MoviesProviders>(context);
     final generosProviders = Provider.of<GeneroProvider>(context);
   
@@ -84,17 +80,10 @@ class TVHomeSreenState extends State<TVHomeSreen> {
     if (selectedGenreId != 'All') {
       selectedMovies = selectedGenderMovies;
     }
-     void _centerSelectedItem(int index) {
-    _pageController.animateToPage(
-      index,
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeIn,
-    );
- }
 
 
     Row rowTittle = Row(
-      
+
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
 
@@ -133,7 +122,8 @@ class TVHomeSreenState extends State<TVHomeSreen> {
        
          
       ] 
-      )//:Container()
+      ),//:Container(),
+
       ],
     );
     SliverAppBar sliverAppBar = SliverAppBar(
@@ -142,9 +132,9 @@ class TVHomeSreenState extends State<TVHomeSreen> {
      leading: Builder(
       builder: (context) {
         return ShortcutController(
-        focusNode: focusNode3,
+        focusNode: focusNode2,
         widget: IconButton(
-          focusNode: focusNode3,
+          focusNode: focusNode2,
             splashRadius: 20,
               focusColor: const Color.fromARGB(134, 132, 132, 132),
             icon: const Icon(Icons.arrow_forward_ios),
@@ -165,15 +155,15 @@ class TVHomeSreenState extends State<TVHomeSreen> {
                 fit: BoxFit.fill,
                 placeholder: const AssetImage(
                   'assets/icon.png',
-            
+
                 ),
-                image: AssetImage( 'assets/gif/${selectedGenreId}.gif'),
+                image: AssetImage( 'assets/gif/$selectedGenreId.gif'),
                   
                 // image: AssetImage('assets/icon.png'),
                 //NetworkImage(moviesProviders.Estrenos.first.posterPath),
                 imageErrorBuilder: (context, error, stackTrace) =>  Image(
                   image:(selectedMovies.isNotEmpty)? MemoryImage(
-                            base64Decode(selectedMovies.first.backdropPath.split(',').last)) as ImageProvider:AssetImage('assets/splash.gif'),
+                            base64Decode(selectedMovies.first.backdropPath.split(',').last)) as ImageProvider:const AssetImage('assets/splash.gif'),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -181,7 +171,7 @@ class TVHomeSreenState extends State<TVHomeSreen> {
           const Padding(
             padding: EdgeInsetsDirectional.only(top: 0),
             child: DecoratedBox(
-            
+
                 decoration: BoxDecoration(
                     gradient: LinearGradient(stops: [0.2, 0.2],
                         begin: Alignment.topCenter,
@@ -191,45 +181,46 @@ class TVHomeSreenState extends State<TVHomeSreen> {
         ]),
       ),
     );
-    return WillPopScope(
-       onWillPop: () => Future.value(false),
+    return PopScope(
+       canPop:true,
+
       child: SafeArea(
         child: RawKeyboardListener(
           focusNode: focusNode4,
           onKey: (event) {
              if (event is RawKeyDownEvent) {
-         
-                if(event.logicalKey.keyLabel=="Arrow Down"&& scrollController.position.pixels >=scrollController.position.maxScrollExtent-100){
+
+                if(event.logicalKey.keyLabel=="Arrow Down" && scrollController.position.pixels >=scrollController.position.maxScrollExtent-100){
                   setState(() {
                     moviesProviders.getGenderMovies(selectedGenreId).then((_){
                       scrollController.animateTo(
       scrollController.position.maxScrollExtent,
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeOut,
-    ); 
+    );
                     } );
                   });
                 }}
           },
           child: Scaffold(
-          
+
               drawerScrimColor: const Color.fromARGB(39, 247, 246, 246),
               backgroundColor: const Color.fromARGB(0, 42, 41, 41).withOpacity(1),
               drawer:  TVMenuDrawer(Usuario: widget.Usuario,),
               body:  CustomScrollView(
                 controller: scrollController,
-              
+
                     slivers: [
-                    
+
                 sliverAppBar,
                 SliverList(
                     delegate: SliverChildListDelegate([
                   CarouselSlider(
-                    options: CarouselOptions(  
-                  
-                      
-                     
-                    
+                    options: CarouselOptions(
+
+
+
+
                       viewportFraction: 0.33,
                         autoPlayCurve: Curves.bounceIn,height: 80.0),
                     items: generos.map((genre) {
@@ -239,23 +230,23 @@ class TVHomeSreenState extends State<TVHomeSreen> {
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
                               width: MediaQuery.of(context).size.width*0.33,
-                              margin:  EdgeInsets.symmetric(
+                              margin:  const EdgeInsets.symmetric(
                                   horizontal: 5.0, vertical: 2),
                               decoration:  BoxDecoration(
-                                  color: (genre.id==selectedGenreId)? Color.fromARGB(255, 22, 0, 0):Color.fromARGB(255, 125, 17, 17),
+                                  color: (genre.id==selectedGenreId)? const Color.fromARGB(255, 22, 0, 0):const Color.fromARGB(255, 125, 17, 17),
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
+                                      const BorderRadius.all(Radius.circular(20))),
                               child: ShortcutController(
                                 focusNode: FocusNode(),
                                 widget: TextButton(
-                                  
+
                                   style: ButtonStyle(
                                    overlayColor: MaterialStateProperty.resolveWith<Color?>(
                 (Set<MaterialState> states) {
           if (states.contains(MaterialState.focused)) {
             return Colors.red; // Cambia esto al color que desees para el foco
           }
-          return null; // Usa el color predeterminado para otros estados
+          return Colors.orange; // Usa el color predeterminado para otros estados
                 },
               ),
                                       shape: MaterialStateProperty.all<
@@ -271,18 +262,19 @@ class TVHomeSreenState extends State<TVHomeSreen> {
                                         color: Colors.white, fontSize: 24),
                                   ),
                                   onPressed: () {
-                                  
+
                                     setState(() {
-                                      
+
                                       selectedGenreId = genre.id;
                                       if (genre.id != 'All') {
                                         selectedGenderMovies = moviesProviders
                                             .Todo[generos.indexOf(genre)];
                                       }
-                              
+                                      //Toma foco primera
+                                      //FocusScope.of(context).requestFocus(focusNode3);
                                       // else selectedMovies = moviesProviders.Estrenos;
                                     });
-                              
+
                                   },
                                 ),
                               ),
@@ -293,6 +285,7 @@ class TVHomeSreenState extends State<TVHomeSreen> {
                     }).toList(),
                   ),
                 ])),
+
                 SliverList(
                     delegate: SliverChildListDelegate([
                   const SizedBox(
@@ -300,7 +293,7 @@ class TVHomeSreenState extends State<TVHomeSreen> {
                   ),
                 //  (selectedGenreId=='All' )? TVMovieSlider(
                 //   Page: 'Home',
-                  
+
                 //     onNextPage: (){
                 //       moviesProviders.getEstrenosMovies();
                 //     },
@@ -312,11 +305,13 @@ class TVHomeSreenState extends State<TVHomeSreen> {
                     height: 30,
                   )
                 ])),
-                SliderVertical(selectedMovies:(selectedGenreId=='All')?moviesProviders.Estrenos :
+                SliderVertical(
+                  key: const Key("pelis"),
+                  selectedMovies:(selectedGenreId=='All')?moviesProviders.Estrenos :
                 moviesProviders.Todo[moviesProviders.posicion(selectedGenreId)],onNextPage:  (){(selectedGenreId=='All')?moviesProviders.getEstrenosMovies() :
                 moviesProviders.Aumentar_Numero(selectedGenreId);}, scrollController: scrollController,),
-                
-               
+
+
               ])),
         ),
       ),
@@ -362,7 +357,7 @@ class _SliderVerticalState extends State<SliderVertical> {
            && _isLoading ==false
            ) {
             // ignore: await_only_futures
-            widget.onNextPage();  
+            widget.onNextPage();
             setState(() {
              _isLoading =true; 
             });
@@ -381,6 +376,7 @@ class _SliderVerticalState extends State<SliderVertical> {
       
      
   }
+
 @override
   void dispose() {
     super.dispose();
@@ -461,7 +457,7 @@ class MoviePoster2 extends StatelessWidget {
      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0),
-          side: BorderSide(
+          side: const BorderSide(
             color: Color.fromARGB(179, 0, 0, 0),
           ),
         ),
@@ -496,12 +492,12 @@ class MoviePoster2 extends StatelessWidget {
                       );
                     },
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
+
+                      borderRadius: BorderRadius.zero,
                       child: FadeInImage(
-                        placeholder: const AssetImage('assets/loading.gif'),
-                        image: MemoryImage(
-                            base64Decode(moviefinal.backdropPath.split(',').last)),
-                        //NetworkImage(moviefinal.posterPath),
+                        placeholder: const AssetImage('assets/icon.png'),
+                        image: checkImage(moviefinal),
+                        //NetworkImage(movie-final.posterPath),
                         imageErrorBuilder: (context, error, stackTrace) => Image(
                           image: const AssetImage('assets/icon.png'),
                           height: 200,
@@ -516,6 +512,7 @@ class MoviePoster2 extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
+
                     moviefinal.title,
                     style: const TextStyle(
                         fontSize: 14,
@@ -533,4 +530,15 @@ class MoviePoster2 extends StatelessWidget {
       ),
     );
   }
+
+  checkImage(Movie moviefinal) {
+    PPrint (moviefinal);
+    if (isBase64(moviefinal.backdropPath.split(',').last)){
+     return MemoryImage(
+            base64Decode(moviefinal.backdropPath.split(',').last));
+    }else {
+      return const AssetImage('assets/icon.png');
+    }
+  }
+
 }

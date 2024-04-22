@@ -15,13 +15,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:yml/screens/TV_screens/login_screen.dart';
 
 
-import 'globals/globals.dart';
+
 
 import 'generated/l10n.dart';
 import 'providers/generos_provider.dart';
 import 'providers/movie_providers.dart';
 import 'providers/user_provider.dart';
-import 'screens/details_screens.dart';
+
 import 'screens/login_screen.dart';
 import 'screens/movie_screen.dart';
 import 'screens/register_screen.dart';
@@ -121,31 +121,29 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
    
-    final prefs = PreferenciasUsuario();
+    //final prefs = PreferenciasUsuario();
     
     return ProviderP(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: OrientationBuilder(
           builder: (BuildContext context, Orientation orientation) {
-            return Container(
-              child: AnimatedSplashScreen(
-                splashIconSize: 400,
-                duration: 4400,
-                splash: const Image(
-                  image: AssetImage('assets/splash.gif'),
-                  fit: BoxFit.cover,
-                ),
-
-                //loguinscreen()
-                nextScreen:(widget.isTV)?const TVLoginScreen():LoginScreen(),
-                //nextScreen: homeScreen2('nada'),
-                // nextScreen: MovieScreen3(),
-                
-                splashTransition: SplashTransition.fadeTransition,
-                pageTransitionType: PageTransitionType.fade,
-                backgroundColor: const Color.fromARGB(255, 9, 0, 0),
+            return AnimatedSplashScreen(
+              splashIconSize: 400,
+              duration: 4400,
+              splash: const Image(
+                image: AssetImage('assets/splash.gif'),
+                fit: BoxFit.cover,
               ),
+
+              //loguinscreen()
+              nextScreen:(widget.isTV)?const TVLoginScreen():const LoginScreen(),
+              //nextScreen: homeScreen2('nada'),
+              // nextScreen: MovieScreen3(),
+
+              splashTransition: SplashTransition.fadeTransition,
+              pageTransitionType: PageTransitionType.fade,
+              backgroundColor: const Color.fromARGB(255, 9, 0, 0),
             );
           },
         ),
