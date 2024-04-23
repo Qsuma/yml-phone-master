@@ -218,7 +218,7 @@ class _PosterAndTitle extends StatelessWidget {
           ),
           const SizedBox(width: 20),
           ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: size.width - 170),
+            constraints: BoxConstraints(maxWidth: size.width - 230),
             child: Container(
               width: MediaQuery.of(context).size.width*0.4,
               child: Column(
