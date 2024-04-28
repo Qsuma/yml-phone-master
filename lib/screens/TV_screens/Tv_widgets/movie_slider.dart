@@ -121,6 +121,25 @@ class MoviePoster extends StatelessWidget {
     return ShortcutController(
       focusNode: focusNode,
       widget: TextButton(
+        style: ButtonStyle(
+          
+          overlayColor: MaterialStateProperty.resolveWith<Color?>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.focused)) {
+          return Colors.red; // Cambia esto al color que desees para el foco
+        }
+        return null; // Usa el color predeterminado para otros estados
+      },
+    ),
+     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+          side: const BorderSide(
+            color: Color.fromARGB(179, 0, 0, 0),
+          ),
+        ),
+      ),
+        ),
         autofocus: false,
         onPressed:() {
           if(Page == 'Home'){

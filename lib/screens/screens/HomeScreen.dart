@@ -85,14 +85,14 @@ class _HomeSreenState extends State<HomeSreen> {
           IconButton(
               
               splashRadius: 20,
-              focusColor: Color.fromARGB(134, 132, 132, 132),
+              focusColor: Colors.red,
               icon: const Icon(Icons.search, color: Colors.red,),
               onPressed: () =>
                   showSearch(context: context, delegate: movieSearchDelegate())),
          
          Platform.isWindows? IconButton(
           splashRadius: 20,
-          focusColor: Color.fromARGB(134, 132, 132, 132),
+          focusColor: Colors.red,
           onPressed:() {
           
           windowManager.minimize();
@@ -100,7 +100,7 @@ class _HomeSreenState extends State<HomeSreen> {
          
           Platform.isWindows? IconButton(
             splashRadius: 20,
-            focusColor: Color.fromARGB(134, 132, 132, 132),
+            focusColor: Colors.red,
             onPressed:() {
          
           windowManager.setFullScreen(ismaximaced);
@@ -114,7 +114,7 @@ class _HomeSreenState extends State<HomeSreen> {
         }, icon: (ismaximaced)?Icon(Icons.fullscreen):Icon(Icons.fullscreen_exit)):Container(),
        Platform.isWindows? IconButton(
         splashRadius: 20,
-            focusColor: Color.fromARGB(134, 132, 132, 132),
+            focusColor: Colors.red,
         onPressed:() {
         
          
@@ -131,7 +131,7 @@ class _HomeSreenState extends State<HomeSreen> {
         return  IconButton(
        
             splashRadius: 20,
-              focusColor: Color.fromARGB(134, 132, 132, 132),
+              focusColor: Colors.red,
             icon: Icon(Icons.arrow_forward_ios),
             onPressed: () => Scaffold.of(context).openDrawer(),
           );

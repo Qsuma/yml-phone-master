@@ -133,7 +133,7 @@ return Future.value(
 
     focusNode: focusNode,
             splashRadius: 20,
-                focusColor: const Color.fromARGB(134, 132, 132, 132),
+                focusColor:  Colors.red[100],
                 color: Colors.red,
     icon: const Icon(Icons.arrow_back),
     iconSize: 30,
@@ -262,7 +262,7 @@ return Future.value(
                 focusNode: focusNode1,
                 widget: IconButton(iconSize: 50,
                   splashRadius: 30,
-                  focusColor: const Color.fromARGB(134, 132, 132, 132),
+                  focusColor: Colors.red,
                 focusNode: focusNode1,
                          
                   onPressed: () {

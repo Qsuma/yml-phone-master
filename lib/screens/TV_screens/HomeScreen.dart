@@ -28,25 +28,42 @@ class TVHomeSreen extends StatefulWidget {
 
 class TVHomeSreenState extends State<TVHomeSreen> {
   final ScrollController scrollController =ScrollController();
-  final FocusNode focusNode = FocusNode();
-  final FocusNode focusNode1 = FocusNode();
-  final FocusNode focusNode2 = FocusNode();
-  final FocusNode focusNode3 = FocusNode();
-  final FocusNode focusNode4 = FocusNode();
+  final FocusNode focusNodeSliderPeticion = FocusNode();
+  final FocusNode focusNodeHome = FocusNode();
+  final FocusNode focusNodeSlider = FocusNode();
+  final FocusNode focusNodeSearch = FocusNode();
+  final FocusNode focusNodeDrawer = FocusNode();
+  final FocusNode focusNodeGeneros = FocusNode();
+  final FocusNode focusNodePeticion = FocusNode();
   bool ismaximaced =false;
   String selectedGenreId = 'All';
   List<Movie> selectedGenderMovies = [];
  @override
   void initState() {
-    focusNode.addListener(_listener);
-    focusNode1.addListener(_listener);
-    focusNode2.addListener(_listener);
-    focusNode3.addListener(_listener);
-    focusNode4.addListener(_listener);
+    focusNodeSliderPeticion.addListener(_listener);
+    focusNodeHome.addListener(_listener);
+    focusNodeSlider.addListener(_listener);
+    focusNodeSearch.addListener(_listener);
+    focusNodeDrawer.addListener(_listener);
+    focusNodeGeneros.addListener(_listener);
+    focusNodePeticion.addListener(_listener);
     super.initState();
   }
-  
+  void requestFocus(BuildContext context,FocusNode focusN){
+    FocusScope.of(context).requestFocus(focusN);
+  }
   _listener() {
+// if (FocusScope.of(context).focusedChild == focusNodeGeneros) {
+//     // Aquí puedes implementar la lógica para decidir a qué nodo de enfoque pasar.
+//     // Por ejemplo, podrías tener una variable que determine a qué nodo pasar.
+//     if (/* tu condición para pasar a focusNode3 */) {
+//       requestFocus(context, focusNodeDrawer);
+//     } else if (/* tu condición para pasar a focusNode4 */) {
+//       requestFocus(context, focusNodeSlider);
+//     }
+//  }
+
+
 
     scrollController.animateTo(0, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
   }
@@ -55,17 +72,21 @@ class TVHomeSreenState extends State<TVHomeSreen> {
   }
   @override
   void dispose() {
-  focusNode.removeListener(_listener);
-  focusNode1.removeListener(_listener);
-  focusNode2.removeListener(_listener);
-  focusNode3.removeListener(_listenerPelisToGeneros);
-  focusNode4.removeListener(_listener);
-  
-    focusNode.dispose();
-    focusNode1.dispose();
-    focusNode2.dispose();
-    focusNode3.dispose();
-    focusNode4.dispose();
+    focusNodeHome.removeListener(_listener);
+  focusNodeSliderPeticion.removeListener(_listener);
+  focusNodeSlider.removeListener(_listener);
+  focusNodeSearch.removeListener(_listener);
+  focusNodeDrawer.removeListener(_listener);
+  focusNodeGeneros.removeListener(_listenerPelisToGeneros);
+  focusNodePeticion.removeListener(_listener);
+   
+    focusNodeHome.dispose();
+    focusNodeSliderPeticion.dispose();  
+    focusNodeSlider.dispose();
+    focusNodeSearch.dispose();
+    focusNodeDrawer.dispose();
+    focusNodeGeneros.dispose();
+    focusNodePeticion.dispose();
     
     super.dispose();
   }
@@ -95,10 +116,10 @@ class TVHomeSreenState extends State<TVHomeSreen> {
        Row(
         children:[
           ShortcutController(
-            focusNode: FocusNode(),
+            focusNode: focusNodeHome,
             widget: IconButton(
               splashRadius: 20,
-              focusColor: const Color.fromARGB(134, 132, 132, 132),
+              focusColor: Colors.red[100],
                   icon: const Icon(Icons.home),
                   onPressed: () {
                     scrollController.animateTo(
@@ -110,11 +131,11 @@ class TVHomeSreenState extends State<TVHomeSreen> {
                 ),
           ),
           ShortcutController(
-            focusNode: focusNode1,
+            focusNode: focusNodeSearch,
             widget: IconButton(
-              focusNode: focusNode1,
+              focusNode: focusNodeSearch,
               splashRadius: 20,
-              focusColor: const Color.fromARGB(134, 132, 132, 132),
+              focusColor:  Colors.red[100],
               icon: const Icon(Icons.search, color: Colors.red,),
               onPressed: () =>
                   showSearch(context: context, delegate: movieSearchDelegate())),
@@ -132,11 +153,11 @@ class TVHomeSreenState extends State<TVHomeSreen> {
      leading: Builder(
       builder: (context) {
         return ShortcutController(
-        focusNode: focusNode2,
+        focusNode: focusNodeDrawer,
         widget: IconButton(
-          focusNode: focusNode2,
+          focusNode: focusNodeDrawer,
             splashRadius: 20,
-              focusColor: const Color.fromARGB(134, 132, 132, 132),
+              focusColor: Colors.red[100],
             icon: const Icon(Icons.arrow_forward_ios),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
@@ -186,11 +207,60 @@ class TVHomeSreenState extends State<TVHomeSreen> {
 
       child: SafeArea(
         child: RawKeyboardListener(
-          focusNode: focusNode4,
+          focusNode: focusNodePeticion,
           onKey: (event) {
              if (event is RawKeyDownEvent) {
 
-                if(event.logicalKey.keyLabel=="Arrow Down" && scrollController.position.pixels >=scrollController.position.maxScrollExtent-100){
+              //NODEGENEROS
+ if (FocusScope.of(context).focusedChild == focusNodeGeneros) {
+
+    if (event.logicalKey.keyLabel=="Arrow Up") {
+            requestFocus(context, focusNodeDrawer);
+          }
+    // if (event.logicalKey.keyLabel=="Arrow Down") {
+    //         //requestFocus(context, focusNodeSlider);
+    //       }
+        }
+        //NODEDRAWER
+if (FocusScope.of(context).focusedChild == focusNodeDrawer) {
+          if (event.logicalKey.keyLabel=="Arrow Down") {
+            requestFocus(context, focusNodeGeneros);
+          }
+          else if ( event.logicalKey.keyLabel=="Arrow Left") {
+            requestFocus(context, focusNodeSearch);
+          }
+         else if (event.logicalKey.keyLabel=="Arrow Right") {
+            requestFocus(context, focusNodeHome);
+          }
+        }  
+//NODESEARCH
+if (FocusScope.of(context).focusedChild == focusNodeSearch) {
+          if (event.logicalKey.keyLabel=="Arrow Down") {
+            requestFocus(context, focusNodeGeneros);
+          }
+           
+          else if ( event.logicalKey.keyLabel=="Arrow Left") {
+            requestFocus(context, focusNodeHome);
+          }
+         else if (event.logicalKey.keyLabel=="Arrow Right") {
+            requestFocus(context, focusNodeDrawer);
+          }
+        }  
+        //NODEHOME
+if (FocusScope.of(context).focusedChild == focusNodeHome) {
+          if (event.logicalKey.keyLabel=="Arrow Down") {
+            requestFocus(context, focusNodeGeneros);
+          }
+           
+          else if ( event.logicalKey.keyLabel=="Arrow Left") {
+            requestFocus(context, focusNodeDrawer);
+          }
+         else if (event.logicalKey.keyLabel=="Arrow Right") {
+            requestFocus(context, focusNodeSearch);
+          }
+        }                  
+        
+if(event.logicalKey.keyLabel=="Arrow Down" && scrollController.position.pixels >=scrollController.position.maxScrollExtent-100){
                   setState(() {
                     moviesProviders.getGenderMovies(selectedGenreId).then((_){
                       scrollController.animateTo(
@@ -215,74 +285,79 @@ class TVHomeSreenState extends State<TVHomeSreen> {
                 sliverAppBar,
                 SliverList(
                     delegate: SliverChildListDelegate([
-                  CarouselSlider(
-                    options: CarouselOptions(
-
-
-
-
-                      viewportFraction: 0.33,
-                        autoPlayCurve: Curves.bounceIn,height: 80.0),
-                    items: generos.map((genre) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width*0.33,
-                              margin:  const EdgeInsets.symmetric(
-                                  horizontal: 5.0, vertical: 2),
-                              decoration:  BoxDecoration(
-                                  color: (genre.id==selectedGenreId)? const Color.fromARGB(255, 22, 0, 0):const Color.fromARGB(255, 125, 17, 17),
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(20))),
-                              child: ShortcutController(
-                                focusNode: FocusNode(),
-                                widget: TextButton(
-
-                                  style: ButtonStyle(
-                                   overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-          if (states.contains(MaterialState.focused)) {
-            return Colors.red; // Cambia esto al color que desees para el foco
-          }
-          return Colors.orange; // Usa el color predeterminado para otros estados
-                },
-              ),
-                                      shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(18.0),
-                                              side: const BorderSide(
-                                                  color:
-                                                      Color.fromARGB(179, 0, 0, 0))))),
-                                  child: Text(
-                                    genre.genre,
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 24),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    
+                    child: CarouselSlider(
+                      
+                      options: CarouselOptions(
+                    
+                    
+                    
+                    
+                        viewportFraction: 0.69,
+                          autoPlayCurve: Curves.bounceIn,height: 80.0),
+                      items: generos.map((genre) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width*0.33,
+                                margin:  const EdgeInsets.symmetric(
+                                    horizontal: 5.0, vertical: 2),
+                                decoration:  BoxDecoration(
+                                    color: (genre.id==selectedGenreId)? const Color.fromARGB(255, 22, 0, 0):const Color.fromARGB(255, 125, 17, 17),
+                                    borderRadius:
+                                        const BorderRadius.all(Radius.circular(20))),
+                                child: ShortcutController(
+                                  focusNode: focusNodeGeneros,
+                                  widget: TextButton(
+                                    focusNode: focusNodeGeneros,
+                                    style: ButtonStyle(
+                                     overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                                    (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.focused)) {
+                                return Colors.red; // Cambia esto al color que desees para el foco
+                              }
+                              return Colors.orange; // Usa el color predeterminado para otros estados
+                                    },
                                   ),
-                                  onPressed: () {
-
-                                    setState(() {
-
-                                      selectedGenreId = genre.id;
-                                      if (genre.id != 'All') {
-                                        selectedGenderMovies = moviesProviders
-                                            .Todo[generos.indexOf(genre)];
-                                      }
-                                      //Toma foco primera
-                                      //FocusScope.of(context).requestFocus(focusNode3);
-                                      // else selectedMovies = moviesProviders.Estrenos;
-                                    });
-
-                                  },
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(18.0),
+                                                side: const BorderSide(
+                                                    color:
+                                                        Color.fromARGB(179, 0, 0, 0))))),
+                                    child: Text(
+                                      genre.genre,
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 24),
+                                    ),
+                                    onPressed: () {
+                    
+                                      setState(() {
+                    
+                                        selectedGenreId = genre.id;
+                                        if (genre.id != 'All') {
+                                          selectedGenderMovies = moviesProviders
+                                              .Todo[generos.indexOf(genre)];
+                                        }
+                                        //Toma foco primera
+                                        //FocusScope.of(context).requestFocus(focusNode3);
+                                        // else selectedMovies = moviesProviders.Estrenos;
+                                      });
+                    
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    }).toList(),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ])),
 
@@ -305,11 +380,15 @@ class TVHomeSreenState extends State<TVHomeSreen> {
                     height: 30,
                   )
                 ])),
-                SliderVertical(
-                  key: const Key("pelis"),
-                  selectedMovies:(selectedGenreId=='All')?moviesProviders.Estrenos :
-                moviesProviders.Todo[moviesProviders.posicion(selectedGenreId)],onNextPage:  (){(selectedGenreId=='All')?moviesProviders.getEstrenosMovies() :
-                moviesProviders.Aumentar_Numero(selectedGenreId);}, scrollController: scrollController,),
+                 SliderVertical(
+                  focusNodePeticionSliderr: focusNodeSliderPeticion,
+                  focusNodegGeneros: focusNodeGeneros,
+                  focusNodeslider: focusNodeSlider,
+                    key: const Key("pelis"),
+                    selectedMovies:(selectedGenreId=='All')?moviesProviders.Estrenos :
+                  moviesProviders.Todo[moviesProviders.posicion(selectedGenreId)],onNextPage:  (){(selectedGenreId=='All')?moviesProviders.getEstrenosMovies() :
+                  moviesProviders.Aumentar_Numero(selectedGenreId);}, scrollController: scrollController,),
+                
 
 
               ])),
@@ -327,11 +406,12 @@ class SliderVertical extends StatefulWidget {
   const SliderVertical({
     super.key,
     required this.selectedMovies,
-    required this.onNextPage, required this.scrollController,
+    required this.onNextPage, required this.scrollController, required this.focusNodeslider, required this.focusNodegGeneros, required this.focusNodePeticionSliderr,
   });
-  
   final ScrollController scrollController;
-
+  final FocusNode focusNodePeticionSliderr;
+  final FocusNode focusNodeslider;
+  final FocusNode focusNodegGeneros;
   final VoidCallback onNextPage;
   final List<Movie> selectedMovies;
   
@@ -351,7 +431,7 @@ class _SliderVerticalState extends State<SliderVertical> {
     widget.scrollController.addListener(_listener);
   }
   _listener() async {
-      
+       
    if  (widget.scrollController.position.pixels >=
           widget.scrollController.position.maxScrollExtent-100
            && _isLoading ==false
@@ -379,6 +459,9 @@ class _SliderVerticalState extends State<SliderVertical> {
 
 @override
   void dispose() {
+    widget.focusNodePeticionSliderr.dispose();
+    widget.focusNodeslider.dispose();
+    widget.focusNodegGeneros.dispose();
     super.dispose();
     widget.scrollController;
     widget.scrollController.removeListener(_listener);
@@ -389,24 +472,26 @@ class _SliderVerticalState extends State<SliderVertical> {
   @override
   Widget build(BuildContext context) {
     return SliverGrid(
-        delegate:
-            // ignore: unrelated_type_equality_checks
-            SliverChildBuilderDelegate(
-                childCount: widget.selectedMovies.length,
-                // snapshot.data!.length,
-                //moviesProviders.Estrenos.length,
-                (context, index) =>  MoviePoster2(
-                    //vacia, '23'
-                    widget.selectedMovies[index],
-                    // snapshot.data![index],
-                    //moviesProviders.Estrenos.where((element) => element.genreId == selectedGenreId || selectedGenreId == 'All').first,
-                    )),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: 0.6,
-          mainAxisSpacing:  8,
-          crossAxisSpacing: 10,
-          crossAxisCount:   6,
-        ));
+                delegate:
+                    // ignore: unrelated_type_equality_checks
+                    SliverChildBuilderDelegate(
+                    
+                        childCount: widget.selectedMovies.length,
+                        // snapshot.data!.length,
+                        //moviesProviders.Estrenos.length,
+                        (context, index) =>  MoviePoster2(
+                            //vacia, '23'
+                            widget.selectedMovies[index],
+                            // snapshot.data![index],
+                            //moviesProviders.Estrenos.where((element) => element.genreId == selectedGenreId || selectedGenreId == 'All').first,
+                            )),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 0.6,
+                  mainAxisSpacing:  8,
+                  crossAxisSpacing: 10,
+                  crossAxisCount:   6,
+                ));
+      
   }
 }
 //}

@@ -112,7 +112,7 @@ class _CustomAppBar extends StatelessWidget {
     return SliverAppBar(
       leading: IconButton(
             splashRadius: 20,
-                focusColor: const Color.fromARGB(134, 132, 132, 132),
+                focusColor:  Colors.red,
                 color: Colors.red,
     icon: const Icon(Icons.arrow_back),
     onPressed: () {
