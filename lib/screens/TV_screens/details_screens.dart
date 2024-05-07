@@ -209,8 +209,7 @@ return Future.value(
         return const AssetImage('assets/icon.png');
       }
     }
-    final String posterPath= checkImage(movie).toString();
-    
+    final String posterPath= movie.posterPath.split(',').last;
     return Container(
       height: MediaQuery.of(context).size.height*0.3,
       margin: const EdgeInsets.only(top: 20),
@@ -225,7 +224,8 @@ return Future.value(
               'assets/loading.gif',
         
             ),
-            image:checkImage(movie),
+            image:MemoryImage(
+                base64Decode(posterPath)),
             imageErrorBuilder: (context, error, stackTrace) => const Image(
               image: AssetImage('assets/icon.png'),
               fit: BoxFit.contain,
@@ -264,7 +264,8 @@ return Future.value(
                   splashRadius: 30,
                   focusColor: Colors.red,
                 focusNode: focusNode1,
-                         
+                  autofocus: true,
+
                   onPressed: () {
                     Navigator.push(
                       context,

@@ -1,4 +1,6 @@
 // ignore_for_file: file_names
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +29,7 @@ class TVHomeSreen extends StatefulWidget {
 }
 
 class TVHomeSreenState extends State<TVHomeSreen> {
+  final CarouselController _carouselController = CarouselController();
   final ScrollController scrollController =ScrollController();
   final FocusNode focusNodeSliderPeticion = FocusNode();
   final FocusNode focusNodeHome = FocusNode();
@@ -35,22 +38,31 @@ class TVHomeSreenState extends State<TVHomeSreen> {
   final FocusNode focusNodeDrawer = FocusNode();
   final FocusNode focusNodeGeneros = FocusNode();
   final FocusNode focusNodePeticion = FocusNode();
+  final FocusNode focusNodeArriba=FocusNode();
   bool ismaximaced =false;
+  int _currentIndex = 0;
+
   String selectedGenreId = 'All';
   List<Movie> selectedGenderMovies = [];
  @override
   void initState() {
     focusNodeSliderPeticion.addListener(_listener);
-    focusNodeHome.addListener(_listener);
+    focusNodeHome.addListener(_listenerHome);
     focusNodeSlider.addListener(_listener);
     focusNodeSearch.addListener(_listener);
-    focusNodeDrawer.addListener(_listener);
-    focusNodeGeneros.addListener(_listener);
+    focusNodeDrawer.addListener(_listenerDawer);
+    focusNodeGeneros.addListener(_listenerPelisToGeneros);
     focusNodePeticion.addListener(_listener);
     super.initState();
   }
   void requestFocus(BuildContext context,FocusNode focusN){
     FocusScope.of(context).requestFocus(focusN);
+  }
+  _listenerHome(){
+    scrollController.animateTo(0, duration: const Duration(milliseconds: 50), curve: Curves.easeInOut);
+  }
+  _listenerDawer(){
+    scrollController.animateTo(0, duration: const Duration(milliseconds: 50), curve: Curves.easeInOut);
   }
   _listener() {
 // if (FocusScope.of(context).focusedChild == focusNodeGeneros) {
@@ -58,25 +70,38 @@ class TVHomeSreenState extends State<TVHomeSreen> {
 //     // Por ejemplo, podrías tener una variable que determine a qué nodo pasar.
 //     if (/* tu condición para pasar a focusNode3 */) {
 //       requestFocus(context, focusNodeDrawer);
-//     } else if (/* tu condición para pasar a focusNode4 */) {
+//     } else if (/* tu cond  ición para pasar a focusNode4 */) {
 //       requestFocus(context, focusNodeSlider);
 //     }
 //  }
+   // scrollController.animateTo(0, duration: const Duration(milliseconds: 100), curve: Curves.easeInOut);
 
-
-
-    scrollController.animateTo(0, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
-  }
+    }
   _listenerPelisToGeneros(){
-   PPrint('Lista de Pelis To generos ');
+   //PPrint('Lista de Pelis To generos ');
   }
+   _animateToSelectedPage(int index)  {
+     final Size screenSize = MediaQuery.of(context).size;
+     // Obtener la posición horizontal del foco actual
+     final double horizontalPosition = (screenSize.width / 2) ;
+     var a=FocusScope.of(context).focusedChild?.offset.distance;
+     //print(FocusScope.of(context).focusedChild?.offset.distance);
+     if (a==null){}
+     else if(a<screenSize.width / 3 && a<(screenSize.width/3* 2 )) {
+
+       _carouselController.previousPage();
+     }else if(a>(screenSize.width / 3)*2){
+
+       _carouselController.nextPage();
+     }
+ }
   @override
   void dispose() {
-    focusNodeHome.removeListener(_listener);
+    focusNodeHome.removeListener(_listenerHome);
   focusNodeSliderPeticion.removeListener(_listener);
   focusNodeSlider.removeListener(_listener);
   focusNodeSearch.removeListener(_listener);
-  focusNodeDrawer.removeListener(_listener);
+  focusNodeDrawer.removeListener(_listenerDawer);
   focusNodeGeneros.removeListener(_listenerPelisToGeneros);
   focusNodePeticion.removeListener(_listener);
    
@@ -116,22 +141,21 @@ class TVHomeSreenState extends State<TVHomeSreen> {
        Row(
         children:[
           ShortcutController(
-            focusNode: focusNodeHome,
+
+            focusNode: focusNodeArriba,
             widget: IconButton(
+              focusNode: focusNodeHome,
               splashRadius: 20,
               focusColor: Colors.red[100],
                   icon: const Icon(Icons.home),
-                  onPressed: () {
-                    scrollController.animateTo(
-            0.0,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-                    );
+
+              onPressed: () {
+
                   },
                 ),
           ),
           ShortcutController(
-            focusNode: focusNodeSearch,
+            focusNode: focusNodeArriba,
             widget: IconButton(
               focusNode: focusNodeSearch,
               splashRadius: 20,
@@ -153,10 +177,12 @@ class TVHomeSreenState extends State<TVHomeSreen> {
      leading: Builder(
       builder: (context) {
         return ShortcutController(
-        focusNode: focusNodeDrawer,
-        widget: IconButton(
-          focusNode: focusNodeDrawer,
-            splashRadius: 20,
+        focusNode: focusNodeArriba,
+
+          widget: IconButton(
+            padding:const EdgeInsetsDirectional.only(start:15),
+            focusNode: focusNodeDrawer,
+            splashRadius: 10,
               focusColor: Colors.red[100],
             icon: const Icon(Icons.arrow_forward_ios),
             onPressed: () => Scaffold.of(context).openDrawer(),
@@ -206,68 +232,49 @@ class TVHomeSreenState extends State<TVHomeSreen> {
        canPop:true,
 
       child: SafeArea(
-        child: RawKeyboardListener(
+        child: KeyboardListener(
           focusNode: focusNodePeticion,
-          onKey: (event) {
-             if (event is RawKeyDownEvent) {
+          onKeyEvent: (event) async {
+             if (event is KeyDownEvent) {
 
-              //NODEGENEROS
- if (FocusScope.of(context).focusedChild == focusNodeGeneros) {
+               //NODEGENEROS
+               if (event.logicalKey.keyLabel=="Arrow Left" && focusNodeSearch.hasFocus) {
 
-    if (event.logicalKey.keyLabel=="Arrow Up") {
-            requestFocus(context, focusNodeDrawer);
-          }
-    // if (event.logicalKey.keyLabel=="Arrow Down") {
-    //         //requestFocus(context, focusNodeSlider);
-    //       }
-        }
-        //NODEDRAWER
-if (FocusScope.of(context).focusedChild == focusNodeDrawer) {
-          if (event.logicalKey.keyLabel=="Arrow Down") {
-            requestFocus(context, focusNodeGeneros);
-          }
-          else if ( event.logicalKey.keyLabel=="Arrow Left") {
-            requestFocus(context, focusNodeSearch);
-          }
-         else if (event.logicalKey.keyLabel=="Arrow Right") {
-            requestFocus(context, focusNodeHome);
-          }
-        }  
-//NODESEARCH
-if (FocusScope.of(context).focusedChild == focusNodeSearch) {
-          if (event.logicalKey.keyLabel=="Arrow Down") {
-            requestFocus(context, focusNodeGeneros);
-          }
-           
-          else if ( event.logicalKey.keyLabel=="Arrow Left") {
-            requestFocus(context, focusNodeHome);
-          }
-         else if (event.logicalKey.keyLabel=="Arrow Right") {
-            requestFocus(context, focusNodeDrawer);
-          }
-        }  
-        //NODEHOME
-if (FocusScope.of(context).focusedChild == focusNodeHome) {
-          if (event.logicalKey.keyLabel=="Arrow Down") {
-            requestFocus(context, focusNodeGeneros);
-          }
-           
-          else if ( event.logicalKey.keyLabel=="Arrow Left") {
-            requestFocus(context, focusNodeDrawer);
-          }
-         else if (event.logicalKey.keyLabel=="Arrow Right") {
-            requestFocus(context, focusNodeSearch);
-          }
-        }                  
-        
-if(event.logicalKey.keyLabel=="Arrow Down" && scrollController.position.pixels >=scrollController.position.maxScrollExtent-100){
+                 focusNodeHome.requestFocus();
+               }
+
+               if (event.logicalKey.keyLabel=="Arrow Right" && focusNodeDrawer.hasFocus) {
+
+                    focusNodeHome.requestFocus();
+                 }
+                 if (event.logicalKey.keyLabel=="Arrow Left" && focusNodeHome.hasFocus) {
+
+                    FocusScope.of(context).requestFocus(focusNodeDrawer.children.firstOrNull) ;
+
+
+                 }
+                 if (event.logicalKey.keyLabel=="Arrow Up" && focusNodeHome.hasFocus) {
+                      scrollController.animateTo(0, duration: const Duration(milliseconds: 100), curve: Curves.bounceInOut);
+
+                 }
+               if (event.logicalKey.keyLabel=="Arrow Up" && focusNodeDrawer.hasFocus) {
+                 scrollController.animateTo(0, duration: const Duration(milliseconds: 100), curve: Curves.bounceInOut);
+
+               }
+                 // if (event.logicalKey.keyLabel=="Arrow Down") {
+                 //         //requestFocus(context, focusNodeSlider);
+                 //       }
+
+               //NODEDRAWER
+
+               if(event.logicalKey.keyLabel=="Arrow Down" && scrollController.position.pixels >=scrollController.position.maxScrollExtent-100){
                   setState(() {
                     moviesProviders.getGenderMovies(selectedGenreId).then((_){
                       scrollController.animateTo(
-      scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeOut,
-    );
+                        scrollController.position.maxScrollExtent,
+                      duration: const Duration(milliseconds: 10),
+                       curve: Curves.easeOut,
+                      );
                     } );
                   });
                 }}
@@ -289,23 +296,31 @@ if(event.logicalKey.keyLabel=="Arrow Down" && scrollController.position.pixels >
                     width: MediaQuery.of(context).size.width,
                     
                     child: CarouselSlider(
-                      
+                      carouselController: _carouselController,
                       options: CarouselOptions(
+                          enlargeCenterPage: true,
+
+                          enlargeFactor: 0.20,
+
+                          onPageChanged:(index,fn){
+                            setState(() {
+                              _currentIndex=index;
+
+                            });
+                      },
                     
                     
-                    
-                    
-                        viewportFraction: 0.69,
-                          autoPlayCurve: Curves.bounceIn,height: 80.0),
+                        viewportFraction: 0.3333,
+                          autoPlayCurve: Curves.bounceIn,height: 60.0),
                       items: generos.map((genre) {
                         return Builder(
                           builder: (BuildContext context) {
                             return Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(2.0),
                               child: Container(
-                                width: MediaQuery.of(context).size.width*0.33,
+                                width: MediaQuery.of(context).size.width*0.333,
                                 margin:  const EdgeInsets.symmetric(
-                                    horizontal: 5.0, vertical: 2),
+                                    horizontal: 1.0, vertical: 2),
                                 decoration:  BoxDecoration(
                                     color: (genre.id==selectedGenreId)? const Color.fromARGB(255, 22, 0, 0):const Color.fromARGB(255, 125, 17, 17),
                                     borderRadius:
@@ -313,7 +328,8 @@ if(event.logicalKey.keyLabel=="Arrow Down" && scrollController.position.pixels >
                                 child: ShortcutController(
                                   focusNode: focusNodeGeneros,
                                   widget: TextButton(
-                                    focusNode: focusNodeGeneros,
+                                    autofocus: true,
+                                    //focusNode: focusNodeGeneros,
                                     style: ButtonStyle(
                                      overlayColor: MaterialStateProperty.resolveWith<Color?>(
                                     (Set<MaterialState> states) {
@@ -333,7 +349,7 @@ if(event.logicalKey.keyLabel=="Arrow Down" && scrollController.position.pixels >
                                     child: Text(
                                       genre.genre,
                                       style: const TextStyle(
-                                          color: Colors.white, fontSize: 24),
+                                          color: Colors.white, fontSize: 15),
                                     ),
                                     onPressed: () {
                     
@@ -344,6 +360,16 @@ if(event.logicalKey.keyLabel=="Arrow Down" && scrollController.position.pixels >
                                           selectedGenderMovies = moviesProviders
                                               .Todo[generos.indexOf(genre)];
                                         }
+                                       // _carouselController.animateToPage(_currentIndex) ;
+
+                                        scrollController.animateTo(180, duration: const Duration(milliseconds: 10), curve: Curves.easeInOut);
+                                        // Centramos y seleciionamos
+                                        setState(() {
+                                          _animateToSelectedPage(_currentIndex);
+                                        });
+
+                                        //Focus.of(context).requestFocus(focusNodePeticion.children.last);
+
                                         //Toma foco primera
                                         //FocusScope.of(context).requestFocus(focusNode3);
                                         // else selectedMovies = moviesProviders.Estrenos;
@@ -376,14 +402,12 @@ if(event.logicalKey.keyLabel=="Arrow Down" && scrollController.position.pixels >
                 //     movies: moviesProviders.Estrenos,
                 //     title: ClassLocalizations.of(context).estrenos,
                 //   ):Container(),
-                  const SizedBox(
-                    height: 30,
-                  )
+
                 ])),
                  SliderVertical(
-                  focusNodePeticionSliderr: focusNodeSliderPeticion,
-                  focusNodegGeneros: focusNodeGeneros,
-                  focusNodeslider: focusNodeSlider,
+                  //focusNodePeticionSliderr: focusNodeSliderPeticion,
+                  ///focusNodegGeneros: focusNodeGeneros,
+                  //focusNodeslider: focusNodeSlider,
                     key: const Key("pelis"),
                     selectedMovies:(selectedGenreId=='All')?moviesProviders.Estrenos :
                   moviesProviders.Todo[moviesProviders.posicion(selectedGenreId)],onNextPage:  (){(selectedGenreId=='All')?moviesProviders.getEstrenosMovies() :
@@ -406,12 +430,12 @@ class SliderVertical extends StatefulWidget {
   const SliderVertical({
     super.key,
     required this.selectedMovies,
-    required this.onNextPage, required this.scrollController, required this.focusNodeslider, required this.focusNodegGeneros, required this.focusNodePeticionSliderr,
+    required this.onNextPage, required this.scrollController,
   });
   final ScrollController scrollController;
-  final FocusNode focusNodePeticionSliderr;
-  final FocusNode focusNodeslider;
-  final FocusNode focusNodegGeneros;
+  //final FocusNode focusNodePeticionSliderr;
+  //final FocusNode focusNodeslider;
+  //final FocusNode focusNodegGeneros;
   final VoidCallback onNextPage;
   final List<Movie> selectedMovies;
   
@@ -459,9 +483,9 @@ class _SliderVerticalState extends State<SliderVertical> {
 
 @override
   void dispose() {
-    widget.focusNodePeticionSliderr.dispose();
-    widget.focusNodeslider.dispose();
-    widget.focusNodegGeneros.dispose();
+    //widget.focusNodePeticionSliderr.dispose();
+    //widget.focusNodeslider.dispose();
+    //widget.focusNodegGeneros.dispose();
     super.dispose();
     widget.scrollController;
     widget.scrollController.removeListener(_listener);
@@ -528,7 +552,7 @@ class MoviePoster2 extends StatelessWidget {
     
 
       widget: TextButton(
-        
+          //autofocus:true,
         style: ButtonStyle(
           
           overlayColor: MaterialStateProperty.resolveWith<Color?>(
@@ -548,7 +572,7 @@ class MoviePoster2 extends StatelessWidget {
         ),
       ),
         ),
-        autofocus: false,
+
        onPressed: () {
          Navigator.push(
                         context,
@@ -581,7 +605,8 @@ class MoviePoster2 extends StatelessWidget {
                       borderRadius: BorderRadius.zero,
                       child: FadeInImage(
                         placeholder: const AssetImage('assets/icon.png'),
-                        image: checkImage(moviefinal),
+                        image: MemoryImage(
+                            base64Decode(moviefinal.backdropPath.split(',').last)),
                         //NetworkImage(movie-final.posterPath),
                         imageErrorBuilder: (context, error, stackTrace) => Image(
                           image: const AssetImage('assets/icon.png'),
@@ -597,6 +622,7 @@ class MoviePoster2 extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
+
 
                     moviefinal.title,
                     style: const TextStyle(
